@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>CVS Root (Windows)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body>
+<h1>How to change cvs root for a project in Windows</h1>
+
+<p>The problem that you might encouter appears when you try to connect to your CVS repository at work via a local network address and at home via an internet address. In this case all Root files in the CVS folders in your project must be set with the corresponding IP address.</p>
+
+<p>The solution I'm proposing here is to create two bat files that will copy two different Root files to all CVS folders in a folder tree. The first pair of bat/root files is used at work and the second at home.</p>
+
+<p>Here is the code for cvsroot-work.bat:</p>
+<blockquote><pre>
+@echo off
+
+set r=cvsroot-work.txt
+set d=D:\MyProject
+set t=cvsroot-list.tmp
+
+dir %d% /ad /b /s | find "CVS" > %t%
+for /f %%a in (%t%) do copy /y %r% %%a\Root
+del %t%
+
+set r=
+set d=
+set t=
+</pre></blockquote>
+
+<p>In the same folder you should have a file named cvsroot-work.txt that represents the Root file when at work:</p>
+<blockquote><pre>:pserver:myname at 172.16.0.5:/CVSRepositories/MyProject</pre></blockquote>
+
+<p>You should also create a cvsroot-home.bat that works with your cvsroot-home.txt I leave this to you.</p>
+
+<p>Any comments are welcome. Have fun!</p>
+</body>
+</html>

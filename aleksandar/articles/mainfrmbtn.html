@@ -1,0 +1,86 @@
+<html>
+<head>
+<style type="text/css">
+body {
+     font-family: "Courier New", Courier, mono;
+     font-size: 14px;
+	color: #000000; 
+	 background-color: #FFFFFF     }
+.controlword {
+	font-weight: bold}
+.comment {  font-style: italic; color: #999900}
+.update {
+	color: #FF0000;
+}
+</style>
+<title>Main form's task button</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta name="keywords" content="docking,window,windows,article,tutorial,code,source,delphi">
+</head>
+
+<body>
+<p><b>Show main form's real taskbar button</b></p>
+<p><span class="update">Update 19.11.2006</span> Now that Windows Vista is out showing main form's real taskbar button is a must have. Otherwise you don't have thumbnails and Flip3D. An article available here: </p>
+<p> <a href="http://www.installationexcellence.com/articles/VistaWithDelphi/Index.html" target="_blank">http://www.installationexcellence.com/articles/VistaWithDelphi/Index.html</a></p>
+<p>explains the full  technique. I expect that the code presented there works better than what I have compiled from articles read on the Internet as it comes from Peter Below. Guess this all makes my article here obsolete :) </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>!!! While playing with the code presented here I saw multiple bugs coming out of the techniques I use. First of all when you have a modal form open on top of the main form, switching between yours and another window hides the modal form and demands the user to click on the main form so that the modal form would appear. Another side effect is that both the application's window and that of the main form appear in the Applications tab in Windows Task Manager. I tried to make modifications but it seems to hard to make it work. Due to the instability of the code I don't recommend using it!</p>
+<p>&nbsp;&nbsp;Maybe two months ago I posted a question on Borland Newsgroups. 
+      I wondered how come the taskbar button of a Delphi Application behaves different 
+      than the one of a MS MFC application for example. I mean I was surprised to 
+      see that on a Windows 2000/XP there are missing items from the system menu displayed 
+      at the taskbar. Someone from Borland told me that this is because the button 
+      belongs to the Application's window handle and not to the one of the main form. 
+      Using two well know techniques: Hide a button from taskbar (applied for the 
+      Application button) and Show a button for a given form (applied to obtain a 
+      button for the Main form) I managed to achieve the behaviour I wanted. Then 
+      I saw a bug, a problem occured when Minimizing the Application. I won't go too 
+      deep into explaining it but will only tell you the workaround. It's pretty simple, 
+      you just have to suppress the Application window getting the SC_MINIMIZE command. 
+      Enough with the intro scroll down and check out the code. Any comments and especially 
+      bug report are welcome =)<br>
+</p>
+<p>And here's the code:</p>
+<p> <span class="comment">&nbsp;&nbsp;//Show main form's real task button</span><br>
+  &nbsp;&nbsp;<span class="controlword">procedure</span> CreateParams(<span class="controlword">var</span> 
+  Params: TCreateParams); <span class="controlword">override</span>;<br>
+  &nbsp;&nbsp;<span class="controlword">procedure</span> WMSysCommand(<span class="controlword">var</span> 
+  Message: TWMSysCommand); <span class="controlword">message</span> WM_SYSCOMMAND;<br>
+  <span class="controlword">end</span>;</p>
+<p><span class="controlword">var</span><br>
+  &nbsp;&nbsp;frmMain: TfrmMain;</p>
+<p class="controlword">implementation</p>
+<p><span class="controlword">procedure</span> TfrmMain.CreateParams(<span class="controlword">var</span> 
+  Params: TCreateParams);<br>
+  <span class="controlword">begin</span><br>
+  &nbsp;&nbsp;<span class="controlword">inherited</span> CreateParams(Params);</p>
+<p> &nbsp;&nbsp;<span class="comment">//Hide the button created by Delphi for 
+  the Application</span><br>
+  &nbsp;&nbsp;SetWindowLong(Application.Handle, GWL_EXSTYLE, WS_EX_TOOLWINDOW);</p>
+<p> &nbsp;&nbsp;<span class="comment">//Show a button for the main form</span><br>
+  &nbsp;&nbsp;<span class="controlword">with</span> Params <span class="controlword">do</span><br>
+  &nbsp;&nbsp;<span class="controlword">begin</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;ExStyle := ExStyle <span class="controlword">or</span> 
+  WS_EX_APPWINDOW;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;WndParent := GetDesktopwindow;<br>
+  &nbsp;&nbsp;<span class="controlword">end</span>;<br>
+  <span class="controlword">end</span>;</p>
+<p><span class="controlword">procedure</span> TfrmMain.WMSysCommand(<span class="controlword">var</span> 
+  Message: TWMSysCommand);<br>
+  <span class="controlword">begin</span><br>
+  &nbsp;&nbsp;<span class="comment">//Pass minimize straight to the window's handle</span><br>
+  &nbsp;&nbsp;<span class="controlword">if</span> (Message.CmdType <span class="controlword">and</span> 
+  $FFF0 = SC_MINIMIZE) <span class="controlword">then</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;DefWindowProc(Handle, WM_SYSCOMMAND, SC_MINIMIZE, 0)<br>
+  &nbsp;&nbsp;<span class="controlword">else</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">inherited</span>;<br>
+  <span class="controlword">end</span>;</p>
+<p></p>
+<p>&nbsp;</p>
+<p align="right"><font size="-1">Copyright &copy; 2006 Wise Guy<br>
+  wise_guybg@yahoo.com <br>
+  Created: 14.09.2003</font> <font size="-1"><br>
+  Last revised: 19.11.2006</font> </p>
+</body>
+</html>

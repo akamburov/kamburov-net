@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>Change TLL in Windows</title></head>
+<body>
+<h1>Change TTL of network packets in Windows</h1>
+
+<h2>1. About</h2>
+<p> THE INFORMATION HERE IS PROVIDED &quot;AS IS&quot; . THE  AUTHOR IS NOT TO BE HELD RESPONSIBLE FOR ANY DAMAGE CAUSED BY THE USE  OF THE TECHNIQUES EXPLAINED HERE.</p>
+<p>This tutorial is strictly for  educational purposes. It will explain how one can change the TTL (Time  To Live) value of&nbsp; incoming packets in order to allow an Windows XP's ICS  (Internet Connection Sharing) host to work even if TTL=1 when it is  received.</p>
+<h2>2. Why TTL=1</h2>
+<p>If your ISP is bad,  or let's say they have a reason not to allow customers to share their  Internet connection  then you end up with a TTL set to &quot;1&quot; for all packets that come to you  from the Internet. The result of this value is that when the packet  tries to get routed by the Windows XP ICS host to the client computers the TTL is  decremented to &quot;0&quot; and since this value means that the packet has  expired, your PC will drop it. The client PCs won't even know what hit  them. They will send requests. You will appear to process them but at  the end you'll simply trash all responses from Internet just before  sending them to the client computer that expected from you to share with  him a little bit of your connection.</p>
+<h2>3. Different solutions</h2>
+<p>What  a hacker will do is install Linux and be free to touch wherever he  wants :-) There exists a program  called iptables  used to  configure the Linux 2.4.x and 2.6.x IPv4 packet filtering ruleset. Since I don't want to copy/paste more text ;-), I'll just give you a link to the site of the framework :</p>
+<p><a href="http://www.netfilter.org/" target="_blank">http://www.netfilter.org/</a></p>
+<p>I  read in the forums that a Linksys router also provides you the means to change the TTL in a configuration file. Anyway this is all to advanced for us. The simple users of Windows that want to play hosts for ICS  and not move out of the beloved Microsof world will search the Internet for another solution. They'll fall to a miriad of topics and articles. Some from Microsof and some not from Microsof. Finally they'll see that going simple with Windows XP ICS means that they'll probably need to go tough with tweaking it to change the TTL that's raising problems. This is the time when a man stops and looks around before setting his mind on the difficult task that he sees ahead. And with my luck I have just downloaded a Windows Packet Filter Kit.</p>
+<h2>4. (My) Solution</h2>
+<p>There is a site out there at :</p>
+<p><a href="http://www.ntkernel.com/" target="_blank">http://www.ntkernel.com/</a> </p>
+<p>where you can find the answer to all your prayers.</p>
+<p> All the forums say that the best thing one can have, to do the job is a NDIS Driver. That is a driver that sits right between the Network Adapter drivers and the Windows' TCP/IP stack. Microsof have tried to make it difficult for the ordinary developer to be able to place his code in that special place by not providing meaningful documentation about how to get there. Anyway the guys from NTKernel have released the beast to the open. They provide you with a Windows Packet Filter Kit to &quot;transparently  filter (view and modify) raw network packets with minimal impact on  network activity without having to write low level TDI or NDIS driver  code&quot;. Just go to the page of WinpkFilter : </p>
+<p><a href="http://www.ntkernel.com/w&amp;p.php?id=7" target="_blank">http://www.ntkernel.com/w&amp;p.php?id=7</a></p>
+<p>and read the features it provides. What was most important for me is that it can do the job, it has examples and even has examples written in Delphi. I was still excited when I found that one of the exemples was ListAdapters. OK, step one. Another one was PassThru. A program to print packets that pass through. So what's left for me is to change the print code with some modify code and I'll have my laptop  use the connection of my dextop PC. Then I became the most excited. </p>
+<p>OK. I'll continue with the modifications to the PassThru example as a Delphi code since this article is getting a bit long and it's getting a bit late. At some line you set the AdapterMode and what you need is to filter only received packets. So you can change the mode to receive-only tunnel: </p>
+<pre>  AdapterMode.dwFlags := MSTCP_FLAG_RECV_TUNNEL;</pre>
+<p>Some lines bellow comes the Ethernet header : </p>
+<pre>  pEtherHeader := TEtherHeaderPtr(@Buffer.m_IBuffer); </pre>
+<p>Here you can add a check for the IP protocol which is :</p>
+<pre>  if ntohs(pEtherHeader.h_proto) = ETH_P_IP then</pre>
+<p>After that what you can do is simply get the IP Header : </p>
+<pre>  pIPHeader := TIPHeaderPtr(Integer(pEtherHeader) +
+    SizeOf(TEtherHeader));</pre>
+  <p>Check the TTL and if necessary do the change : </p>
+<pre>
+  if pIPHeader.TTL &lt;= 1 then
+  begin
+    pIPHeader.TTL := 5; //let's say 5
+    pIPHeader.Checksum := 0;
+    pIPHeader.Checksum := htons(
+      Checksum(PWord(pIPHeader),
+      (SizeOf(TIPHeader) -
+       SizeOf(DWORD)) div 2)); //remove IP Options size</pre>
+<p>The code for the Checksum is as follows : </p>
+<pre>
+// Calculate IP checkcum without IP Options
+function Checksum(p: PWord; Size: Word): Word;
+var
+  i: Integer;
+  Sum: Cardinal;
+begin
+
+  Sum := 0;
+
+  for i := 0 to Size - 1 do
+  begin
+    Sum := Sum + ntohs(p^);
+    Inc(p);
+  end;
+
+  while (Sum shr 16) > 0 do
+    Sum := (Sum and $FFFF) + (Sum shr 16);
+
+  Result := not Sum;
+end;
+</pre>
+<p>Source code posted here comes from the forum at ntkernel.com so you see that since I got to that site there was not much left for me to do. Guess the GUI was what I took the most part in :-) Well... of course browsing the Internet and the hundreds of posts on the topic was an effort too. </p>
+<p>Finally I have come up with a working application. After some polishing I'm proud to present it to you (binary + source) : <a href="attlfilter.zip" target="_self">attlfilter.zip</a> (~350KB)</p>
+<h2>5. Final words </h2>
+<p> The Internet is full of resources. You can find solutions for most of the problems you encounter. It's nice that there are people to put all that knowledge there :-)</p>
+<p>Hope this helps someone.</p>
+<p>&nbsp;</p>
+<p>Page last modified : 07.10.2008</p>
+</body>
+</html>

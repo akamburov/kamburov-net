@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Text formatting with RichEdit [2]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<p><font face="Arial, Helvetica, sans-serif"><b>Text formatting with RichEdit 
+  [2]</b><br>
+  </font></p>
+<p><font face="Arial, Helvetica, sans-serif"><i>Информацията тук е изцяло взаимствана 
+  от статията &quot;Faster rich edit syntax highlighting&quot; на <a href="http://home.att.net/%7Erobertdunn/Yacs.html" target="_blank">Robert 
+  Dunn</a> </i> </font></p>
+<p><font face="Arial, Helvetica, sans-serif">Да започваме направо. За да форматираме 
+  текста максимално бързо, трябва да изключим всякакви ненужни обработки на събития, 
+  които забавят работата ни. Това става като изпратим едно EM_SETEVENTMASK на 
+  нашия RichEdit. То се използва за задаване кои съобщения да изпраща RichEdit-а 
+  към програмата. Значи казваме на RichEdit-а да не се занимава изобщо с изпращане 
+  на MouseMove, MouseClick и т.н. докато работим. Освен това ще кажем на RichEdit-а 
+  и да не се прерисува (WM_SETREDRAW) през това време. Ето как изглежда инициализиращия 
+  код:<br>
+  </font></p>
+<p><font face="Arial, Helvetica, sans-serif"><b>procedure</b> Format(AHandle: 
+  THandle);<br>
+  <b>var</b><br>
+  &nbsp;&nbsp;eventMask: Integer; <br>
+  <b>begin</b><br>
+  &nbsp;&nbsp;eventMask := SendMessage(AHandle, EM_SETEVENTMASK, 0, 0); <i>//запазваме 
+  предишната event mask</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, WM_SETREDRAW, 0, 0); <i>//изключваме redraw</i><br>
+  &nbsp;&nbsp;ParseAllText(AHandle); <i>//форматиране</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, WM_SETREDRAW, 1, 0); <i>//включваме redraw</i><br>
+  &nbsp;&nbsp;InvalidateRect(AHandle, nil, true); <i>//прересувай RichEdit-а</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_SETEVENTMASK, 0, eventMask);<i>//възстановяваме 
+  предишната event mask<br>
+  <b>end</b>; </i></font></p>
+<p><font face="Arial, Helvetica, sans-serif">Когато форматираме текста </font><font face="Arial, Helvetica, sans-serif">е 
+  най-добре да забравим свойствата на TRichEdit компонента (пр. SelAttributes) 
+  и да ползваме съобщения. Така постигаме още по-голямо бързодействие. Ще ви покажа 
+  малко примерен код. За съжаление не можах да измисля точно какво да прави и 
+  няма някаква реална цел. Поне ще видите как се ползват съобщенията и общата 
+  идея на този метод за форматиране на текст.</font></p>
+<p><font face="Arial, Helvetica, sans-serif">Процедурата ParseAllText проверява 
+  дали селектирания текст е &quot;then&quot; и ако е сменя цвета му на син. Тази 
+  процедура е доста безмислена, но ви демонстрира работата с SetTokenColor, която 
+  можете да ползвате направо във вашата програма. SetTokenColor прави същинското 
+  форматиране. Тя получава Handle към RichEdit-а, участъка от текст и цвета, който 
+  трябва да се зададе. Тя наглася нова селекция (текста за форматиране), променя 
+  форматирането й и връща началната селекция.</font></p>
+<p><font face="Arial, Helvetica, sans-serif"><b>procedure</b> ParseAllText(AHandle: 
+  THandle);<br>
+  <b>var</b><br>
+  &nbsp;&nbsp;chrgSave, chrgSet: TCharRange;<br>
+  &nbsp;&nbsp;str: <b>string</b>;<br>
+  <b>begin</b><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_EXGETSEL, 0, LongInt(@chrgSave));<i> // 
+  взимаме размера на селекцията</i><br>
+  &nbsp;&nbsp;SetLength(str, chrgSave.cpMax - chrgSave.cpMin);<i> // инициализираме 
+  str</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_GETSELTEXT, 0, LongInt(PChar(str)));<i> 
+  // слагаме селекцията в str</i><br>
+  &nbsp;&nbsp;<b>if</b> str = 'then' <b>then</b><br>
+  &nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;chrgSet.cpMin := chrgSave.cpMin;<i> // инициализираме 
+  chrgSet</i><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;chrgSet.cpMax := chrgSave.cpMax;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;SetTokenColor(AHandle, chrgSet, clBlue);<i> // задаваме 
+  смяна на цвета</i><br>
+  &nbsp;&nbsp;<b>end</b>;<br>
+  <b>end</b>;<br>
+  </font></p>
+<p><font face="Arial, Helvetica, sans-serif"> <b>procedure</b> SetTokenColor(AHandle: 
+  THandle; ACharRange: TCharRange; AColor: TColor);<br>
+  <b>var</b><br>
+  &nbsp;&nbsp;chrgSave: TCharRange;<br>
+  &nbsp;&nbsp;cf: TCharFormat;<br>
+  <b>begin</b><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_EXGETSEL, 0, LongInt(@chrgSave));<i> // 
+  запазваме текущата селекция</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_EXSETSEL, 0, LongInt(@ACharRange));<i> // 
+  нагласяме участъка за промяна</i><br>
+  &nbsp;&nbsp;cf.dwMask := CFM_COLOR;<i> // инициализираме cf</i><br>
+  &nbsp;&nbsp;cf.crTextColor := AColor;<br>
+  &nbsp;&nbsp;cf.dwEffects := CFM_BOLD;<br>
+  &nbsp;&nbsp;cf.cbSize := SizeOf(cf);<br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_SETCHARFORMAT, SCF_SELECTION, LongInt(@cf));<i> 
+  // задаваме новия формат</i><br>
+  &nbsp;&nbsp;SendMessage(AHandle, EM_EXSETSEL, 0, LongInt(@chrgSave));<i> // 
+  връщаме селекцията </i><br>
+  <b>end</b>;<br>
+  </font></p>
+<p><font face="Arial, Helvetica, sans-serif">Е надявам се разбрахте как оптимално 
+  можете да форматирате текст в RichEdit. Вече можете да се пробвате да направите 
+  собствен parser :-)</font></p>
+<p><font face="Arial, Helvetica, sans-serif">Ако имате някакви коментари или въпроси, 
+  ми изпратете един мейл.</font></p>
+<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
+  &copy; 2002 Wise Guy<br>
+  wise_guybg@yahoo.com <br>
+  Last revised: 06.06.2002</font></p>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html>
+<head>
+<style type="text/css">
+body {
+     font-family: "Courier New", Courier, mono;
+     font-size: 14px;
+	color: #000000; 
+	 background-color: #FFFFFF     }
+.controlword {
+	font-weight: bold}
+.comment {  font-style: italic; color: #999900}
+</style>
+<title>Docking windows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta name="keywords" content="docking,window,windows,article,tutorial,code,source,delphi">
+</head>
+
+<body>
+<p><b>Docking windows (overview of From.ScreenSnap included)</b></p>
+<p>&nbsp;&nbsp;Здравейте :) Днес ще Ви покажа как можете да накарате вашия прозорец 
+  да се прикача към краищата на работната площ, когато достигне дадено разстояние. 
+  Наблюдавах тази функция на доста популярния Winamp и реших, че ще е полезно 
+  да го разработя, за да го ползвам в някои мои програмки.</p>
+<p> &nbsp;&nbsp;Известно време след написването на тази статия се появи Delphi 
+  7 и вниманието ми веднага се насочи към новата възможност за snap на TForm. 
+  Погледнах кода на Borland - 10 реда. По това време моят код беше към 100 реда 
+  и естествено веднага се зарибих да оправя нещата. Резултата не закъсня :)</p>
+<p> &nbsp;&nbsp;TfmMain = <span class="controlword">class</span>(TForm) <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+  &nbsp;&nbsp;<span class="controlword">private</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword"></span>pMoved: TPoint;<br>
+  &nbsp;&nbsp;<span class="controlword">protected</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">procedure</span> WMSysCommand(<span class="controlword">var</span> 
+  Msg: TWMSysCommand); <span class="controlword">message</span> WM_SYSCOMMAND;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">procedure</span> WMMoving(<span class="controlword">var</span> 
+  Msg: TWMMoving); <span class="controlword">message</span> WM_MOVING;<br>
+  &nbsp;&nbsp;<span class="controlword">end</span>;</p>
+<p><span class="controlword">var</span><br>
+  &nbsp;&nbsp;fmMain: TfmMain;</p>
+<p class="controlword">implementation</p>
+<p><span class="controlword">procedure</span> TfmMain.WMSysCommand(<span class="controlword">var</span> 
+  Msg: TWMSysCommand);<br>
+  <span class="controlword">const</span><br>
+  &nbsp;&nbsp;SC_DRAGMOVE = $F012;<br>
+  <span class="controlword">begin</span><br>
+  &nbsp;&nbsp;<span class="controlword">if</span> (Msg.CmdType = SC_MOVE) <span class="controlword">or</span> 
+  (Msg.CmdType = SC_DRAGMOVE) <span class="controlword">then</span><br>
+  &nbsp;&nbsp;<span class="controlword">begin</span> <span class="comment">//a 
+  new move was started</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;pMoved.X := 0;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;pMoved.Y := 0;<br>
+  &nbsp;&nbsp;<span class="controlword">end</span>;</p>
+<p>&nbsp;&nbsp;<span class="controlword">inherited</span>;<br>
+  <span class="controlword">end</span>;</p>
+<p><span class="controlword">procedure</span> TfmMain.WMMoving(<span class="controlword">var</span> 
+  Msg: TWMMoving);</p>
+<p>&nbsp;&nbsp;<span class="controlword">procedure</span> BorderDock(<span class="controlword">const</span> 
+  ABorder: Integer; <span class="controlword">var</span> APosition, AChangedPosition: 
+  Integer);<br>
+  &nbsp;&nbsp;<span class="controlword">begin</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">if</span> Abs(ABorder - APosition) 
+  &lt; iDockDistance <span class="controlword">then</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">begin</span> <span class="comment">//the 
+  position has to change</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">if</span> Abs(AChangedPosition) 
+  &gt; iDockDistance <span class="controlword">then</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">begin</span> <span class="comment">//we 
+  need undocking</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APosition := APosition + AChangedPosition; 
+  <span class="comment">//realize position</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AChangedPosition := 0; <span class="comment">//nil 
+  the moved variable</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">end</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">else 
+  begin</span> <span class="comment">//we need to dock the window</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AChangedPosition 
+  := AChangedPosition + APosition - ABorder; <span class="comment">//add new change 
+  to the old</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APosition := ABorder; 
+  <span class="comment">//set new position</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">end</span>;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">end</span>;<br>
+  &nbsp;&nbsp;<span class="controlword">end</span>;</p>
+<p><span class="controlword">begin</span><br>
+  &nbsp;&nbsp;<span class="controlword">if</span> bHasToDock <span class="controlword">then</span><br>
+  &nbsp;&nbsp;<span class="controlword">begin</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">with</span> Screen.WorkAreaRect 
+  <span class="controlword">do</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">begin</span> <span class="comment">//do 
+  dock for all four borders</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderDock(Left, Msg.DragRect^.Left, pMoved.X);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderDock(Top, Msg.DragRect^.Top, pMoved.Y);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderDock(Right - Width, Msg.DragRect^.Left, 
+  pMoved.X);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BorderDock(Bottom - Height, Msg.DragRect^.Top, 
+  pMoved.Y);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<span class="controlword">end</span>; </p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//realize drag rectangle dimensions</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Msg.DragRect^.Right := Msg.DragRect^.Left + Width;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Msg.DragRect^.Bottom := Msg.DragRect^.Top + Height;<br>
+  &nbsp;&nbsp;<span class="controlword">end</span>;</p>
+<p>&nbsp;&nbsp;<span class="controlword">inherited</span>;<br>
+  <span class="controlword">end</span>;</p>
+<p>&nbsp;&nbsp;Моя код отново е по-дълъг, но това се дължи на факта, че използвам 
+  друг подход: прихващам съобщението WM_MOVING, което налага и съхранението на 
+  промяната в координатите. Забелязах, че при Borland не се използва такава глобална 
+  промелива, което е добре (това е така заради закачането към WM_WINDOWPOSCHANGING). 
+  Лошото на техния код е, че ако е изключен &quot;Show window contents while dragging&quot; 
+  (в Windows), няма да се прикача рамката за индикация на движението (която се 
+  използва), тъй като реалното преместване на прозореца става след одобряване 
+  на промяната на позицията. Затова и съм избрал WM_MOVING. Той винаги работи 
+  :)</p>
+<p>&nbsp;&nbsp;Докато разглеждах кода на Forms.pas видях, че има и друг проблем:<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;HandleEdge(x, Monitor.WorkareaRect.Left, Monitor.WorkareaRect.Left);<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;HandleEdge(y, Monitor.WorkareaRect.Top, Monitor.WorkareaRect.Top);</p>
+<p>&nbsp;&nbsp;Като се вземе предвид, че последните два парамеръра се вадят един 
+  от друг, то винаги резултата ще бъде равен на нула. Пример: ако TaskBar (или 
+  някоя друга лента) е прикачен вляво или горе. Е, това си е направо бъг. Може 
+  би са се объркали с добавянето на третите параметри в тези два случая. Ако се 
+  изпуснат ще се използва стойността, която е точно колкото трябва SnapDistance 
+  = 0 (за ляв и горен ръб на формата).</p>
+<p>&nbsp;&nbsp;ПП В случай, че Ви трябва само главната форма да може да се прикача 
+  може да ползвате кода, отделен в собствен модул. Ето ви сорса на моето предложение 
+  <a href="DockManU.pas">DockManU.pas</a> , а информация за употребата му ще намерите 
+  вътре.</p>
+<p>&nbsp;&nbsp;ПП2 Можете да си свалите и компонента TADocker (прикачане на формата, 
+  на която е поставен) от страницата с компоненти на моя сайт. Адреса е :<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.kamburov.net/comps.html" target="_blank">http://www.kamburov.net/comps.html</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;Ако по някаква случайност съм изпуснал нещо или сте намерили грешка, 
+  Ви моля да отделите една минутка и да драснете някой ред. Надявам се да ползвате 
+  моя код, защото смятам, че е добре написан и че съм обърнал внимание на детайлите. 
+  Няма смисъл да се създава едно и също нещо два пъти...&nbsp;&nbsp;</p>
+<p align="right"><font size="-1">Copyright &copy; 2002-2003 Wise Guy<br>
+  wise_guybg at yahoo.com <br>
+  Created: 18.08.2002</font> <font size="-1"><br>
+  Last revised: 31.01.2006</font> </p>
+</body>
+</html>

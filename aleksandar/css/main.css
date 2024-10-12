@@ -1,0 +1,120 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body  {
+	font: 76% Verdana, Arial, Helvetica, sans-serif;
+	background-image: url(../images/bg_body.jpg);
+	background-repeat: repeat-x;
+	background-color: #1E7CD3;
+	color: #000000;
+}
+h1 {
+	font-size: 1.6em;
+	padding: .5em 0;
+}
+h2 {
+	font-size: 1.2em;
+	padding: .5em 0;
+}
+a {
+	color: #006699;
+	text-decoration: none;
+}
+img {
+	border-width: 0;
+}
+div#container { 
+	width: 70em;  
+	background-color: #FFFFFF;
+	margin: 1em auto;
+	border: 1px solid #143250;
+} 
+p#header {
+	background-image: url(../images/bg_header.jpg);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	background-color: #1E7CD3;
+	color: #FFFFFF; 
+	padding: 1em .5em;
+	font-size: 1.6em;
+	font-weight: bold;
+}
+ul#menu {
+	list-style-type: none;
+	background-color: #142E49;
+	margin: 0;
+	padding-left: .5em;
+	height: 2em;
+	white-space: nowrap;
+}
+ul#menu li {
+	float: left;
+	padding: 0 .2em;
+	margin: 0;
+}
+ul#menu li a {
+	display: block;
+	padding: .5em 1em;
+	margin: 0;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+ul#menu li.active a {
+	color: #142E49;
+	background-color: #FFFFFF;
+}
+ul#menu li a:hover {
+	color: #142E49;
+	background-color: #CCCCCC;
+}
+div#content {
+	border-top: .2em solid #CCCCCC;
+	padding: 1em;
+} 
+div#content a {
+	border-bottom: 1px dashed #999999;
+}
+div#content p {
+	line-height: 1.2em;
+	padding: .5em;
+}
+div#content ul {
+	padding: .5em;
+}
+div#content ul li {
+	padding-bottom: .5em;
+}
+div#content ul.cv {
+	list-style-type: none;
+}
+div#content table.cv {
+	padding: .5em;
+}
+div#content table.cv tr.date {
+	background-color: #F0F0F0;
+}
+div#content table.cv td {
+	padding: .2em .5em;
+}
+img#avatar {
+	float: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+	border: 1px solid #999999;
+}
+ul#footer { 
+	clear: both;
+	padding: .2em;
+	background: #DDDDDD;
+	text-align: right;
+	list-style-type: none;
+} 
+ul#footer li {
+	display: inline;
+	white-space: nowrap;
+	padding-left: 2em;
+}
+img#licence {
+	vertical-align: middle;
+}

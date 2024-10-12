@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>VCL и неговата съвместимост с Unicode стандарта</title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<p><font face="Arial, Helvetica, sans-serif"><b>VCL и неговата съвместимост с 
+  Unicode стандарта</b></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ами може да се каже, 
+  че такава просто липсва. Много скоро новите ОС на Microsoft ще изместят напълно 
+  98-цата. Както знаете Windows XP и неговите събратя от рода NT предлагат nativе 
+  Unicode на приложения, които използват кирилица, арабски и т.н. Ако пуснете 
+  вашата Delphi програма, пълна с кирилица, на едно току що инсталирано XP ще 
+  се покажат веднага &quot;маймуните&quot;. Едно от решенията е от настройките 
+  на Windows да се зададе, като език за ANSI програми, Bulgarian. Някои може да 
+  ги устройва това, но този опция е всъщност за съвместимост със стари програми. 
+  Да вземем примера с един английско-български речник, който ръзработвам в момента. 
+  Получавам десетки писма от хора, които имат проблем с &quot;маймуните&quot;. 
+  Тези, които просто не са прочели помощните файлове бързо се справят с проблема 
+  като променят настройките на Windows, но има една група хора, извън България. 
+  Те работят в някаква фирма и не могат да си пипат компютрите, за да изпълняват 
+  нужди им. Получава се, че няма няма начин ANSI VCL-а да визуализира коректно 
+  кирилицата. След доста търсене из Delphi сайтовете попаднах на един юнак, който 
+  се е захванал да прави TNTControls, които поддържат WideString. Ето сайта на 
+  неговия проект откъдето можете да ги свалите :<br>
+  <a href="http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm%20" target="_blank">http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm</a>&nbsp;&nbsp;</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Въпреки, че компонетните 
+  са малко, те са основните и се надявам да ви стигнат. Ако искате да работите 
+  с AnsiString, а само при визуализиране да ги конвертирате в Unicode кирилица, 
+  трябва да използвате JCLUnicode (<a href="http://www.delphi-jedi.org" target="_blank">Project 
+  Jedi</a>). Ето два примера за работа :</font></p>
+<p><font face="Arial, Helvetica, sans-serif"><i>TTNTEdit: </i><br>
+  edtSome.Text := StringToWidestringEx('днес отивам на кино', 1251); </font></p>
+<p><font face="Arial, Helvetica, sans-serif"><i>За да заредите ANSI файл в TNTListBox 
+  :<br>
+  </i><b>var</b> <br>
+  &nbsp;&nbsp;Data: TStringList; <br>
+  &nbsp;&nbsp;i: Integer; <br>
+  <b>begin</b> <br>
+  &nbsp;&nbsp;Data := TStringList.Create; <br>
+  &nbsp;&nbsp;<b>try</b> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Data.LoadFromFile('c:\somefile.txt'); </font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.BeginUpdate; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> i := 0 <b>to</b> Data.Count - 1 <b>do</b> 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.Add(StringToWidestringEx(Data[i], 
+  1251)); <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.EndUpdate; <br>
+  &nbsp;&nbsp;<b>finally</b> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Data.Free; <br>
+  &nbsp;&nbsp;<b>end</b>; <br>
+  <b>end</b>;</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Можете да намерите още 
+  една библиотека с Unicode компоненти за Delphi на адрес :<br>
+  <a href="http://mikroklubben.adsl.dk/%7Enikse/delphi.html#unicode" target="_blank">http://mikroklubben.adsl.dk/~nikse/delphi.html#unicode</a></font></p>
+<p> <font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;EFG's lab също има страница 
+  по въпроса :<br>
+  <a href="http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm" target="_blank">http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm</a></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Скоро получих писмо от 
+  Borut Maricic от Австралия. Той ми посочи един ко</font><font face="Arial, Helvetica, sans-serif">мпонент 
+  - VirtualTreeview на Mike Lischke, който също поддържа Unicode стандарта. За 
+  повече информация отидете на адрес:<br>
+  <a href="http://www.lischke-online.de/VirtualTreeview/VT.html" target="_blank">http://www.lischke-online.de/VirtualTreeview/VT.html</a></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Разгледайте също и <a href="http://www.delphi-unicode.net/" target="_blank">http://www.delphi-unicode.net</a> 
+  . Това е Mike Lischke's Delphi Unicode Center, където също можете да намерите 
+  ценни неща. В основата на TNT компонетите стои неговия Unicode.pas</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; Очевидно започват да 
+  се появат все повече компоненти ползващи WideString. Ако Ви трябва нещо конкретно 
+  и не сте го намерили на тази страница потърсете в Torry, DSP или някой от другите 
+  сайтове за компоненти. С нетърпение очаквам новата версия на Delphi. Надявам 
+  се да има native Unicode поддръжка и така да отпаднат всякакви проблеми свързани 
+  с разработката на многоезични програми.</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; Наскоро реших 
+  да обновя тази статия. Ето как изглиждат нещата сега. Излезе Delphi 7. Вярно, 
+  че има поддръжка на Unicode, но не и за визуалната част. Затова пък TNT доста 
+  се разви и както гледам се превръща в сериозен проект (Borland Partner). От 
+  Microsoft newsgroup-ите вече съветват програмистите да се придържат към Unicode. 
+  Също така, когато става въпрос за програма с няколко езика да не се правят излишни 
+  опити за поддръжка и на двата стандарта едновременно.</font></p>
+<p><font face="Arial, Helvetica, sans-serif">Е това е засега по темата. Ако някой 
+  има интересна информация или някакви въпроси, да ми изпрати един мейл.</font></p>
+<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
+  &copy; 2002 Wise Guy<br>
+  wise_guybg@yahoo.com <br>
+  Last revised: 21.04.2003</font></p>
+</body>
+</html>

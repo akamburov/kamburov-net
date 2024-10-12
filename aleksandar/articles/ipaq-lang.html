@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>How to change the language of your iPAQ</title>
+<meta name="Keywords" content="ipaq,change,language,3600,36xx,rom" />
+<style type="text/css">
+<!--
+td {
+	text-align: center;
+}
+.red {color: #FF0000}
+-->
+</style>
+</head>
+
+<body>
+<h1>How  to change the language of your iPAQ </h1>
+<p>&nbsp;</p>
+<h2>1. About </h2>
+<p>WARNING: PERFORMING SOME OF THE ACTIONS EXPLAINED ON THIS PAGE CAN  VOID YOUR WARRANTY.</p>
+<p> THE INFORMATION HERE IS PROVIDED &quot;AS IS&quot; AND THE  AUTHOR IS NOT RESPONSIBLE FOR ANY DAMAGE OR LOSS OF DATA DUE TO ITS USE.</p>
+<p>This tutorial is strictly for educational purposes. It will explain  how one can install a ROM Update with a different language that the one  setup in factory. This  article is a rewrite for the iPAQ H3600 series of the technique used on this page:</p>
+<p><a href="http://www.pc-counselor.com/How_to/39xxROMlang.htm" target="_blank">http://www.pc-counselor.com/How_to/39xxROMlang.htm</a> </p>
+<p>&nbsp;</p>
+<h2>2. Prepare</h2>
+<p>What we'll do here is install an English PocketPC 2002 ROM Update over a French PocketPC 2000. First you need to  download the files of the final ROM Update.  HP provides the files for the iPAQ H3600 series  on this page: </p>
+<p><a href="http://h18000.www1.hp.com/support/files/handheldiPAQ/us/download/16541.html" target="_blank">http://h18000.www1.hp.com/support/files/handheldiPAQ/us/download/16541.html</a></p>
+<p>We should get the English (US) version: </p>
+<p><a href="ftp://ftp.compaq.com/pub/softpaq/sp22501-23000/SP22898.exe">ftp://ftp.compaq.com/pub/softpaq/sp22501-23000/SP22898.exe</a></p>
+<p>&nbsp;</p>
+<h2>3. Action </h2>
+<p>Extract the downloaded packages to the default  C:\IPAQ or whatever.</p>
+<p>The ROM file is C:\IPAQ\SP22898\english\NK_Glamis3622004WWE.nbf</p>
+<p>Rename the folder of the ROM file from &quot;english&quot; to &quot;French&quot;</p>
+<p>You can  change the ROM file's name from &quot;WWE&quot; to &quot;FRA&quot; but in fact this is of no importance to the installer.</p>
+<p>Open the ROM file with a HexEditor and change &quot;iPAQ 3600-<u>ENG</u>-2.20-503<u>0</u>&quot; to &quot;iPAQ 3600-<u>FRE</u>-2.20-503<u>3</u>&quot; </p>
+<p>Run the C:\IPAQ\SP22898\UpgradeUt.exe and follow the instructions. </p>
+<p>&nbsp;</p>
+<h2>4. I have some explaining to do </h2>
+<p>Changing the name of the folder of the ROM file  is not enough. The installer looks inside it and finds the ROM file (name: whatever; extension: nbf). And here Compaq have added their restriction that makes it a little bit more complicated to change the language of the iPAQ. We need to open a HexEditor and play with the english ROM file so that it looks perfectly french. Changing the ENG to FRE inside is what says to the installer that the language is correct. But then it checks the file checksum number and we need to be sure it's also correct. That why we change 5030 to 5033. </p>
+<p>And the  following table explains it all: </p>
+<table border="1" cellpadding="2" cellspacing="1">
+  <tr>
+    <td>Folder</td>
+    <td>Language abbreviation</td>
+    <td>Hex Codes </td>
+    <td>Result </td>
+  </tr>
+  <tr>
+    <td>english</td>
+    <td>&quot;E&quot; + &quot;N&quot; + &quot;G&quot; </td>
+    <td>45 + 4E + 47 </td>
+    <td>DA</td>
+  </tr>
+  <tr>
+    <td>german</td>
+    <td>&quot;G&quot; + &quot;E&quot; + &quot;R&quot; </td>
+    <td>47 + 45 + 52 </td>
+    <td>DE</td>
+  </tr>
+  <tr>
+    <td>spanish</td>
+    <td>&quot;S&quot; + &quot;P&quot; + &quot;A&quot; </td>
+    <td>53 + 50 + 41 </td>
+    <td>E4</td>
+  </tr>
+  <tr>
+    <td>french</td>  
+    <td>&quot;F&quot; + &quot;R&quot; + &quot;E&quot; </td>
+    <td>46 + 52 + 45 </td>
+    <td>DD</td>
+  </tr>
+</table>
+<p>So we have an english file (ENG) and a checksum 5030. If we change ENG to FRE then he have to substract the code for ENG from the checksum that is now not valid and add the code for FRE to make it  valid for the new language we have defined. Use Windows' calculator in scientific view. Operation is as follows:</p>
+<p>5030 - DA = 4F56 and 4F56 + DD = 5033 or in short </p>
+<p>5030 - DA  + DD = 5033 </p>
+<p>that's it.</p>
+<p>&nbsp;</p>
+<h2>5. Final words </h2>
+<p> With this information you can get a ROM Update of the language you wish to install, change name of the ROM file folder, change the language code insight, recalculate the checksum and have a valid update for an iPAQ of any factory language.</p>
+<p><span class="red">*</span> Another technique I have been informed about is changing the ROM file just before the installer starts to copy it to the iPAQ.</p>
+<p><span class="red">*</span> Here is a sample walkthrough: <a href="http://handhelds.org/pipermail/ipaq/205/20568.html" target="_blank">http://handhelds.org/pipermail/ipaq/205/20568.html</a></p>
+<p>That's all from me. Hope this helps someone. </p>
+<p>&nbsp;</p>
+<p>Document created on: 06/02/2006</p>
+<p>Author: Alexander Kamburov</p>
+<p>Contact: wise_guybg yahoo.com </p>
+</body>
+</html>

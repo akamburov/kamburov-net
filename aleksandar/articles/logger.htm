@@ -1,0 +1,83 @@
+<html>
+
+<head>
+<title>Keylogger </title>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+</head>
+
+<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
+<div align="center"><font face="Courier New, Courier, mono">________________________________________________________ 
+  </font></div>
+<p align="center"><font face="Courier New, Courier, mono"><b>Как да си направим 
+  keylogger ползващ асемблер и още...</b></font></p>
+<p align="center"><font face="Courier New, Courier, mono">_____________________________________________<b>от 
+  <a href="http://wiseguy.hit.bg">Wise Guy</a></b></font></p>
+<p align="left"><font face="Courier New, Courier, mono">&nbsp;&nbsp;Поради сложността 
+  на демонстрационната програма (включени са и доста допълнителни функции), върху 
+  която е базиран този tutorial тук можете да намерите информация и за други техники 
+  освен keyloggin'. На тези които не знаят Delphi им препоръчвам да разгледат 
+  частта &quot;Как хващаме копчето&quot;. Мисля, че ще успеят, с помощта на коментарите 
+  по сорса, да схванат есенцията и да преведат &quot;ядрото&quot; на своя език 
+  :) </font></p>
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Keylogger-ите са нещо ценно. 
+  Те могат да отговорят на един от най-задаваните въпроси &quot;Как да хакна поща 
+  в hotmail ?&quot; (аз успях да получа паролите, и то не само на mail account-и 
+  ;) ). Естествено трябва да разбирате от програмиране, за да скалъпите нещо, 
+  което да ви свърши работа. Програмката, която ще разучавате е моя keylogger 
+  на Delphi и както можете да видите не е нищо ново - 26/12/2000. Той обаче притежава 
+  доста други възможностти, и отчасти може да се ползва като троянец. Изпробван 
+  е в една зала в Пловдив. Забелязах, че има проблеми при опит за рестартиране 
+  на друго PC (от нашите ;) ) в залата. Онзи получава съобщение от рода на &quot;Наистина 
+  ли искате да рестартирате? Някои от връзките ви с компютрите от мрежата ще бъдат 
+  прекъснати.&quot;, но и това пак си е голям базик.</font></p>
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;За да имате възможността 
+  да скриете по-добре вашия &quot;копчепрехващач&quot; е по-добре да не се използват 
+  куки за клавиатурата (веднага се виждат от msinfo), а да прибегнем до асемблер. 
+  Главното тук са два реда код, които слагат натиснатото копче във ваша променлива. 
+  Следва малко обработка, за да получите полезните :) данни. Всичко останало са 
+  екстри. Аз съм добавил:</font></p>
+<ul>
+  <li><font face="Courier New, Courier, mono"> hotwords (можете да управлявате 
+    програмата просто като натискате комбинация от копчета)</font></li>
+  <li><font face="Courier New, Courier, mono"> mailslot (връзка между програмите 
+    във LAN)</font></li>
+  <li><font face="Courier New, Courier, mono"> криптиране на output-а (елементарно, 
+    но все пак е нещо)</font></li>
+  <li><font face="Courier New, Courier, mono"> отдалечено инсталиране (програмата 
+    се слага в Windows\System и един линк във Startup, които след първото пускане 
+    се изтрива)</font></li>
+  <li><font face="Courier New, Courier, mono"> paste on Ctrl+C (добавя се и съдържанието 
+    на Clipboard, за да не изпуснете някоя ценна паролка)</font></li>
+  <li><font face="Courier New, Courier, mono">сканиране само на определени прозорци 
+    (не ви трябва да знаете как се е движил на CounterStrike-а и кога е стрелял)</font></li>
+</ul>
+<a name="view"></a> 
+<p><font face="Courier New, Courier, mono">Този tutorial става нещо много дълъг. 
+  Затова ще разделим всичко на части. Ако пък ви мързи да се опитате да разберете 
+  какъв е механизма на keyloggin' просто си свалете компонента KeySpy (<a href="http://www.utilmind.com">www.utilmind.com</a>) 
+  и си направете една проста програмка с него, но хеу, нали сме хакери ;). Е, 
+  да започваме:</font></p>
+<p align="center"><font face="Courier New, Courier, mono"><a href="log1.htm">Как 
+  хващаме копчето</a></font></p>
+<p align="center"><font face="Courier New, Courier, mono"><a href="log2.htm">Как 
+  работят hotwords</a></font></p>
+<p align="center"><font face="Courier New, Courier, mono"><a href="log3.htm">Как 
+  да базикаме другите компютри</a></font></p>
+<p align="left"><font face="Courier New, Courier, mono">&nbsp;&nbsp;Другото го 
+  оставям сами да го разгадаете. Сорса на logger заедно с компонента ALMailSlot 
+  <a href="logger.zip">тук</a> (25KB)</font></p>
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Оказва се, че щеше да е 
+  по-лесно да я подкарам тази програмка и да зарадвам всички бълг. user-и, вместо 
+  да пиша този giga-tutorial. Надявам поне 1-2ма да го прочетат и най-важното 
+  - да научат нещо;)</font></p>
+<table width="100%" border="0" cellspacing="0">
+  <tr> 
+    <td><font face="Courier New, Courier, mono">[18/01/2002]</font></td>
+    <td>
+      <div align="right"><font face="Courier New, Courier, mono">Ако имате въпроси 
+        намерете ми mail-а</font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
