@@ -1,221 +1,221 @@
-<html>
-<head>
-<title>Text formatting with RichEdit [1]</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-</head>
-
-<body bgcolor="#FFFFFF" text="#000000">
-<p><font face="Arial, Helvetica, sans-serif"><b>Text formatting with RichEdit 
-  [1]</b><br>
-  <br>
-  Един от най-добрите начини за динамично форматиране на текст е използването 
-  на TRichEdit. Първо искам да ви покажа един интересен метод за началното генериране 
-  на RTF-а, който ви осигурява голяма бързина. Идеята е сами да си генерираме 
-  RTF документа и след това да го заредим в RichEdit-а. За целта ще си пишем в 
-  Rich Text Format, който не е труден за разбиране. Ще се нуждаете от помощта 
-  на MSDN (<a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp</a>), 
-  за да намирате нужните ви командни думи. Сега ще ви покажа набързо структурата 
-  на един RTF документ :</font></p>
-<p><font face="Arial, Helvetica, sans-serif">Ето как изглежда целия документ :</font><br>
-  <font face="Courier New, Courier, mono">{\rtf1\ansi\ansicpg1251\deff0\deflang1026<br>
-  &nbsp;&nbsp;{\fonttbl<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;{\f0\fswiss\fcharset0 MS Sans Serif;}<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;{\f1\fnil\fcharset1251 Arial;}<br>
-  &nbsp;&nbsp;}<br>
-  &nbsp;&nbsp;{\colortbl<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;\red0\green0\blue0;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;\red0\green0\blue255;<br>
-  &nbsp;&nbsp;}<br>
-  <br>
-  &nbsp;&nbsp;\f0\cf0\fs20 <br>
-  &nbsp;&nbsp;There is a big shadow over that hill.\par<br>
-  &nbsp;&nbsp;It \b might\b0 be d\b\i ue\b0\i0 to the clouds.\par<br>
-  &nbsp;&nbsp;\'a4\'eb\u949?\u952?\par<br>
-  &nbsp;&nbsp;\highlight1This text's background color is different than\highlight0 
-  this.\par<br>
-  &nbsp;&nbsp;{\highlight1This text's background color is different than} this.<br>
-  }</font></p>
-<p><font face="Arial, Helvetica, sans-serif"><br>
-  <font face="Courier New, Courier, mono">{ </font>- Започваме с "{". Тeзи скоби 
-  се използват за начало и край на файла както и за отделяне на някои елементи<br>
-  <br>
-  След това е нужно да се въведат някой контролни думи:<br>
-  <font face="Courier New, Courier, mono">\rtf1\ansi\ansicpg1251\deff0\deflang1026</font> 
-  - Значението на всяка от тях можете да проверите в <a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">MSDN</a><br>
-  <br>
-  <font face="Courier New, Courier, mono">{\fonttbl{\f0\fswiss\fcharset0 MS Sans 
-  Serif;}{\f1\fnil\fcharset1251 Arial;}}</font> - Таблицата с шрифтовете<br>
-  <br>
-  <font face="Courier New, Courier, mono">{\colortbl</font><font face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono">\red0\green0\blue0;\red0\green0\blue255;} 
-  </font>- Таблицата с цветовете<br>
-  <br>
-  Следва нашия текст. За инициализация извикваме: първия шрифт от тоблицата, първия 
-  цвят от таблицата и нагласяме fontsize на 10 (пише се fontsize * 2)<br>
-  <font face="Courier New, Courier, mono">\f0\cf0\fs20</font><br>
-  <br>
-  Сега е време да добавим малко текст<br>
-  <font face="Courier New, Courier, mono">There is a big shadow over that hill.</font><br>
-  <br>
-  Форматирането изглежда така. Пред контролна дума се слага "\", а след нея празно 
-  място. Ако следва друга контролна дума, празното място се изпуска.<br>
-  <font face="Courier New, Courier, mono">It \b might\b0 be d\b\i ue\b0\i0 to 
-  the clouds.</font><br>
-  <br>
-  Нов ред се обозначава с (#13 и #10 не се използват)<br>
-  <font face="Courier New, Courier, mono">\par</font><br>
-  <br>
-  Други интересни функции:<br>
-  Извеждане на знаци ASCII код (използват се hex стойности)<br>
-  <font face="Courier New, Courier, mono">\'a4\'eb</font><br>
-  <br>
-  <font face="Arial, Helvetica, sans-serif"><b>!!!</b> <i>За да ползвате Unicode 
-  и Highlight е нужно да имате RichEdit v3.0, който е инсталиран по подразби,ане 
-  само на Windows 2000/XP. За 9x/ME е нужен ъпдейт <a href="http://free.techno-link.com/wiseguy/richupd.zip">richupd.exe</a> 
-  (440KB). </i><i>Този файл трябва да е включен п</i></font></font><i>ри разпространението 
-  на вашата програма.</i></font></p>
-<p><font face="Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">Извеждане 
-  на Unicode знаци<br>
-  <font face="Courier New, Courier, mono">\u949?\u952</font><i>?</i></font></font></p>
-<p><font face="Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">Подчертаване 
-  на текст (\highlight + номер на цвят от таблицата)<br>
-  <font face="Courier New, Courier, mono">\highlight1This text's background color 
-  is different than\highlight0 this.</font><br>
-  или<br>
-  <font face="Courier New, Courier, mono">{\highlight1This text's background color 
-  is different than} this.</font><br>
-  Отделянето със скоби прекъсва всякакво форматиране!<br>
-  <br>
-  Все пак разгледайте спецификациите за Rich Text Format в <a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">MSDN</a>, 
-  за да намерите повече информация за формата.<br>
-  <br>
-  А сега да започнем с програмирането. За съхранение на нашия RTF мисля да ползваме 
-  TStringStream. Ето я нашата процедурка:<br>
-  <b>procedure</b> ViewRTFText(AText: <b>string</b>);<br>
-  <b>var</b><br>
-  &nbsp;&nbsp;RTF: TStringStream;<br>
-  &nbsp;&nbsp;i: Integer;<br>
-  &nbsp;&nbsp;cmd, cyr, num: Boolean;<br>
-  &nbsp;&nbsp; ch: Char;<br>
-  <b>const</b><br>
-  &nbsp;&nbsp; Header =<br>
-  &nbsp;&nbsp;'{\rtf1\ansi\ansicpg1251\deff0\deflang1026' +<br>
-  &nbsp;&nbsp;'{\fonttbl{\f0\fswiss\fcharset204 %s;}}' +<br>
-  &nbsp;&nbsp;'{\colortbl\red%d\green%d\blue%d;' +<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;' +<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;' +<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;}' +<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;'\plain\f0\fs%d\cf0\li20';<br>
-  <br>
-  <b>begin</b><br>
-  &nbsp;&nbsp;RTF := TStringStream.Create('');<br>
-  <br>
-  &nbsp;&nbsp; <b>try</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString(Format(Header, [RichEdit1.Font.Name,<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(RichEdit1.Font.Color), GetGValue(RichEdit1.Font.Color), 
-  GetBValue(RichEdit1.Font.Color),<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clRed), GetGValue(clRed), GetBValue(clRed),<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clYellow), GetGValue(clYellow), 
-  GetBValue(clYellow),<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clWhite), GetGValue(clWhite), 
-  GetBValue(clWhite),<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RichEdit1.Font.Size * 2]));<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;cyr := false;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;num := false;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> i := 1 <b>to</b> Length(AText) <b>do</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch := AText[i];<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//if cyrillic<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> (ch > #191) <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> <b>not</b> cyr <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cyr := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\b\cf1');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> <b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> cyr <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd 
-  := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cyr 
-  := false;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\b0\cf0');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>; <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;//if number<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch <b>in</b> ['0'..'9'] <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> <b>not</b> num <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\ul\highlight2');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> <b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> num <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num := false;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\ulnone\highlight3');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>; <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;//if end of line<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch = #13 <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\par\li50');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> (ch <> #13) <b>and</b> (ch <> #10) <b>then</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> cmd <b>then</b> RTF.WriteString(' 
-  ');<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := false;<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch < #192 <b>then</b> RTF.WriteString(ch)<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> RTF.WriteString(LowerCase('\''' 
-  + IntToHex(Ord(ch), 2)));<br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
-  &nbsp;&nbsp;<b>end</b>;<br>
-  <br>
-  &nbsp;&nbsp;RTF.WriteString('}');<br>
-  &nbsp;&nbsp;RTF.Seek(0, soFromBeginning);<br>
-  &nbsp;&nbsp;RichEdit1.Lines.BeginUpdate;<br>
-  &nbsp;&nbsp;RichEdit1.Lines.LoadFromStream(RTF);<br>
-  &nbsp;&nbsp;RichEdit1.Lines.EndUpdate;<br>
-  &nbsp;&nbsp;<b>finally</b><br>
-  &nbsp;&nbsp;&nbsp;&nbsp;RTF.Free;<br>
-  &nbsp;&nbsp;<b>end</b>;<br>
-  <br>
-  &nbsp;&nbsp;RichEdit1.SelStart := 0;<br>
-  &nbsp;&nbsp;RichEdit1.SelLength := 0;<br>
-  <b>end</b>;<br>
-  <br>
-  Тя визуализира подаден й string като извършва следните промени. Ако срещне:<br>
-  - кирилица - удебелява шрифта и сменя цвета му на червен<br>
-  - числа - задава курсивен шрифт и сменя цвета на жълт<br>
-  <br>
-  Ето моя пробен текст :<br>
-  <font face="Courier New, Courier, mono">ViewRTFText('Hello there! Как спа днес.'#13#10 
-  +<br>
-  'През 2002 year we won the World Cup'#13#10 +<br>
-  'Bye');</font><br>
-  <br>
-  В следващата част ще обясня как най-добре можете да променяте форматирането 
-  на текста, докато потребителя работи с вашата програма.</font></font></p>
-<p><font face="Arial, Helvetica, sans-serif">Ако имате някакви коментари или въпроси, 
-  ми изпратете един мейл.</font></p>
-<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
-  &copy; 2002 Wise Guy<br>
-  wise_guybg@yahoo.com <br>
-  Last revised: 06.06.2002</font></p>
-</body>
-</html>
+<html>
+<head>
+<title>Text formatting with RichEdit [1]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<p><font face="Arial, Helvetica, sans-serif"><b>Text formatting with RichEdit 
+  [1]</b><br>
+  <br>
+  Р•РґРёРЅ РѕС‚ РЅР°Р№-РґРѕР±СЂРёС‚Рµ РЅР°С‡РёРЅРё Р·Р° РґРёРЅР°РјРёС‡РЅРѕ С„РѕСЂРјР°С‚РёСЂР°РЅРµ РЅР° С‚РµРєСЃС‚ Рµ РёР·РїРѕР»Р·РІР°РЅРµС‚Рѕ 
+  РЅР° TRichEdit. РџСЉСЂРІРѕ РёСЃРєР°Рј РґР° РІРё РїРѕРєР°Р¶Р° РµРґРёРЅ РёРЅС‚РµСЂРµСЃРµРЅ РјРµС‚РѕРґ Р·Р° РЅР°С‡Р°Р»РЅРѕС‚Рѕ РіРµРЅРµСЂРёСЂР°РЅРµ 
+  РЅР° RTF-Р°, РєРѕР№С‚Рѕ РІРё РѕСЃРёРіСѓСЂСЏРІР° РіРѕР»СЏРјР° Р±СЉСЂР·РёРЅР°. РРґРµСЏС‚Р° Рµ СЃР°РјРё РґР° СЃРё РіРµРЅРµСЂРёСЂР°РјРµ 
+  RTF РґРѕРєСѓРјРµРЅС‚Р° Рё СЃР»РµРґ С‚РѕРІР° РґР° РіРѕ Р·Р°СЂРµРґРёРј РІ RichEdit-Р°. Р—Р° С†РµР»С‚Р° С‰Рµ СЃРё РїРёС€РµРј РІ 
+  Rich Text Format, РєРѕР№С‚Рѕ РЅРµ Рµ С‚СЂСѓРґРµРЅ Р·Р° СЂР°Р·Р±РёСЂР°РЅРµ. Р©Рµ СЃРµ РЅСѓР¶РґР°РµС‚Рµ РѕС‚ РїРѕРјРѕС‰С‚Р° 
+  РЅР° MSDN (<a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp</a>), 
+  Р·Р° РґР° РЅР°РјРёСЂР°С‚Рµ РЅСѓР¶РЅРёС‚Рµ РІРё РєРѕРјР°РЅРґРЅРё РґСѓРјРё. РЎРµРіР° С‰Рµ РІРё РїРѕРєР°Р¶Р° РЅР°Р±СЉСЂР·Рѕ СЃС‚СЂСѓРєС‚СѓСЂР°С‚Р° 
+  РЅР° РµРґРёРЅ RTF РґРѕРєСѓРјРµРЅС‚ :</font></p>
+<p><font face="Arial, Helvetica, sans-serif">Р•С‚Рѕ РєР°Рє РёР·РіР»РµР¶РґР° С†РµР»РёСЏ РґРѕРєСѓРјРµРЅС‚ :</font><br>
+  <font face="Courier New, Courier, mono">{\rtf1\ansi\ansicpg1251\deff0\deflang1026<br>
+  &nbsp;&nbsp;{\fonttbl<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;{\f0\fswiss\fcharset0 MS Sans Serif;}<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;{\f1\fnil\fcharset1251 Arial;}<br>
+  &nbsp;&nbsp;}<br>
+  &nbsp;&nbsp;{\colortbl<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;\red0\green0\blue0;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;\red0\green0\blue255;<br>
+  &nbsp;&nbsp;}<br>
+  <br>
+  &nbsp;&nbsp;\f0\cf0\fs20 <br>
+  &nbsp;&nbsp;There is a big shadow over that hill.\par<br>
+  &nbsp;&nbsp;It \b might\b0 be d\b\i ue\b0\i0 to the clouds.\par<br>
+  &nbsp;&nbsp;\'a4\'eb\u949?\u952?\par<br>
+  &nbsp;&nbsp;\highlight1This text's background color is different than\highlight0 
+  this.\par<br>
+  &nbsp;&nbsp;{\highlight1This text's background color is different than} this.<br>
+  }</font></p>
+<p><font face="Arial, Helvetica, sans-serif"><br>
+  <font face="Courier New, Courier, mono">{ </font>- Р—Р°РїРѕС‡РІР°РјРµ СЃ "{". РўeР·Рё СЃРєРѕР±Рё 
+  СЃРµ РёР·РїРѕР»Р·РІР°С‚ Р·Р° РЅР°С‡Р°Р»Рѕ Рё РєСЂР°Р№ РЅР° С„Р°Р№Р»Р° РєР°РєС‚Рѕ Рё Р·Р° РѕС‚РґРµР»СЏРЅРµ РЅР° РЅСЏРєРѕРё РµР»РµРјРµРЅС‚Рё<br>
+  <br>
+  РЎР»РµРґ С‚РѕРІР° Рµ РЅСѓР¶РЅРѕ РґР° СЃРµ РІСЉРІРµРґР°С‚ РЅСЏРєРѕР№ РєРѕРЅС‚СЂРѕР»РЅРё РґСѓРјРё:<br>
+  <font face="Courier New, Courier, mono">\rtf1\ansi\ansicpg1251\deff0\deflang1026</font> 
+  - Р—РЅР°С‡РµРЅРёРµС‚Рѕ РЅР° РІСЃСЏРєР° РѕС‚ С‚СЏС… РјРѕР¶РµС‚Рµ РґР° РїСЂРѕРІРµСЂРёС‚Рµ РІ <a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">MSDN</a><br>
+  <br>
+  <font face="Courier New, Courier, mono">{\fonttbl{\f0\fswiss\fcharset0 MS Sans 
+  Serif;}{\f1\fnil\fcharset1251 Arial;}}</font> - РўР°Р±Р»РёС†Р°С‚Р° СЃ С€СЂРёС„С‚РѕРІРµС‚Рµ<br>
+  <br>
+  <font face="Courier New, Courier, mono">{\colortbl</font><font face="Arial, Helvetica, sans-serif"><font face="Courier New, Courier, mono">\red0\green0\blue0;\red0\green0\blue255;} 
+  </font>- РўР°Р±Р»РёС†Р°С‚Р° СЃ С†РІРµС‚РѕРІРµС‚Рµ<br>
+  <br>
+  РЎР»РµРґРІР° РЅР°С€РёСЏ С‚РµРєСЃС‚. Р—Р° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РёР·РІРёРєРІР°РјРµ: РїСЉСЂРІРёСЏ С€СЂРёС„С‚ РѕС‚ С‚РѕР±Р»РёС†Р°С‚Р°, РїСЉСЂРІРёСЏ 
+  С†РІСЏС‚ РѕС‚ С‚Р°Р±Р»РёС†Р°С‚Р° Рё РЅР°РіР»Р°СЃСЏРјРµ fontsize РЅР° 10 (РїРёС€Рµ СЃРµ fontsize * 2)<br>
+  <font face="Courier New, Courier, mono">\f0\cf0\fs20</font><br>
+  <br>
+  РЎРµРіР° Рµ РІСЂРµРјРµ РґР° РґРѕР±Р°РІРёРј РјР°Р»РєРѕ С‚РµРєСЃС‚<br>
+  <font face="Courier New, Courier, mono">There is a big shadow over that hill.</font><br>
+  <br>
+  Р¤РѕСЂРјР°С‚РёСЂР°РЅРµС‚Рѕ РёР·РіР»РµР¶РґР° С‚Р°РєР°. РџСЂРµРґ РєРѕРЅС‚СЂРѕР»РЅР° РґСѓРјР° СЃРµ СЃР»Р°РіР° "\", Р° СЃР»РµРґ РЅРµСЏ РїСЂР°Р·РЅРѕ 
+  РјСЏСЃС‚Рѕ. РђРєРѕ СЃР»РµРґРІР° РґСЂСѓРіР° РєРѕРЅС‚СЂРѕР»РЅР° РґСѓРјР°, РїСЂР°Р·РЅРѕС‚Рѕ РјСЏСЃС‚Рѕ СЃРµ РёР·РїСѓСЃРєР°.<br>
+  <font face="Courier New, Courier, mono">It \b might\b0 be d\b\i ue\b0\i0 to 
+  the clouds.</font><br>
+  <br>
+  РќРѕРІ СЂРµРґ СЃРµ РѕР±РѕР·РЅР°С‡Р°РІР° СЃ (#13 Рё #10 РЅРµ СЃРµ РёР·РїРѕР»Р·РІР°С‚)<br>
+  <font face="Courier New, Courier, mono">\par</font><br>
+  <br>
+  Р”СЂСѓРіРё РёРЅС‚РµСЂРµСЃРЅРё С„СѓРЅРєС†РёРё:<br>
+  РР·РІРµР¶РґР°РЅРµ РЅР° Р·РЅР°С†Рё ASCII РєРѕРґ (РёР·РїРѕР»Р·РІР°С‚ СЃРµ hex СЃС‚РѕР№РЅРѕСЃС‚Рё)<br>
+  <font face="Courier New, Courier, mono">\'a4\'eb</font><br>
+  <br>
+  <font face="Arial, Helvetica, sans-serif"><b>!!!</b> <i>Р—Р° РґР° РїРѕР»Р·РІР°С‚Рµ Unicode 
+  Рё Highlight Рµ РЅСѓР¶РЅРѕ РґР° РёРјР°С‚Рµ RichEdit v3.0, РєРѕР№С‚Рѕ Рµ РёРЅСЃС‚Р°Р»РёСЂР°РЅ РїРѕ РїРѕРґСЂР°Р·Р±Рё,Р°РЅРµ 
+  СЃР°РјРѕ РЅР° Windows 2000/XP. Р—Р° 9x/ME Рµ РЅСѓР¶РµРЅ СЉРїРґРµР№С‚ <a href="http://free.techno-link.com/wiseguy/richupd.zip">richupd.exe</a> 
+  (440KB). </i><i>РўРѕР·Рё С„Р°Р№Р» С‚СЂСЏР±РІР° РґР° Рµ РІРєР»СЋС‡РµРЅ Рї</i></font></font><i>СЂРё СЂР°Р·РїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµС‚Рѕ 
+  РЅР° РІР°С€Р°С‚Р° РїСЂРѕРіСЂР°РјР°.</i></font></p>
+<p><font face="Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">РР·РІРµР¶РґР°РЅРµ 
+  РЅР° Unicode Р·РЅР°С†Рё<br>
+  <font face="Courier New, Courier, mono">\u949?\u952</font><i>?</i></font></font></p>
+<p><font face="Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">РџРѕРґС‡РµСЂС‚Р°РІР°РЅРµ 
+  РЅР° С‚РµРєСЃС‚ (\highlight + РЅРѕРјРµСЂ РЅР° С†РІСЏС‚ РѕС‚ С‚Р°Р±Р»РёС†Р°С‚Р°)<br>
+  <font face="Courier New, Courier, mono">\highlight1This text's background color 
+  is different than\highlight0 this.</font><br>
+  РёР»Рё<br>
+  <font face="Courier New, Courier, mono">{\highlight1This text's background color 
+  is different than} this.</font><br>
+  РћС‚РґРµР»СЏРЅРµС‚Рѕ СЃСЉСЃ СЃРєРѕР±Рё РїСЂРµРєСЉСЃРІР° РІСЃСЏРєР°РєРІРѕ С„РѕСЂРјР°С‚РёСЂР°РЅРµ!<br>
+  <br>
+  Р’СЃРµ РїР°Рє СЂР°Р·РіР»РµРґР°Р№С‚Рµ СЃРїРµС†РёС„РёРєР°С†РёРёС‚Рµ Р·Р° Rich Text Format РІ <a href="http://msdn.microsoft.com/library/en-us/dnrtfspec/html/rtfspec.asp" target="_blank">MSDN</a>, 
+  Р·Р° РґР° РЅР°РјРµСЂРёС‚Рµ РїРѕРІРµС‡Рµ РёРЅС„РѕСЂРјР°С†РёСЏ Р·Р° С„РѕСЂРјР°С‚Р°.<br>
+  <br>
+  Рђ СЃРµРіР° РґР° Р·Р°РїРѕС‡РЅРµРј СЃ РїСЂРѕРіСЂР°РјРёСЂР°РЅРµС‚Рѕ. Р—Р° СЃСЉС…СЂР°РЅРµРЅРёРµ РЅР° РЅР°С€РёСЏ RTF РјРёСЃР»СЏ РґР° РїРѕР»Р·РІР°РјРµ 
+  TStringStream. Р•С‚Рѕ СЏ РЅР°С€Р°С‚Р° РїСЂРѕС†РµРґСѓСЂРєР°:<br>
+  <b>procedure</b> ViewRTFText(AText: <b>string</b>);<br>
+  <b>var</b><br>
+  &nbsp;&nbsp;RTF: TStringStream;<br>
+  &nbsp;&nbsp;i: Integer;<br>
+  &nbsp;&nbsp;cmd, cyr, num: Boolean;<br>
+  &nbsp;&nbsp; ch: Char;<br>
+  <b>const</b><br>
+  &nbsp;&nbsp; Header =<br>
+  &nbsp;&nbsp;'{\rtf1\ansi\ansicpg1251\deff0\deflang1026' +<br>
+  &nbsp;&nbsp;'{\fonttbl{\f0\fswiss\fcharset204 %s;}}' +<br>
+  &nbsp;&nbsp;'{\colortbl\red%d\green%d\blue%d;' +<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;' +<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;' +<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;'\red%d\green%d\blue%d;}' +<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;'\plain\f0\fs%d\cf0\li20';<br>
+  <br>
+  <b>begin</b><br>
+  &nbsp;&nbsp;RTF := TStringStream.Create('');<br>
+  <br>
+  &nbsp;&nbsp; <b>try</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString(Format(Header, [RichEdit1.Font.Name,<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(RichEdit1.Font.Color), GetGValue(RichEdit1.Font.Color), 
+  GetBValue(RichEdit1.Font.Color),<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clRed), GetGValue(clRed), GetBValue(clRed),<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clYellow), GetGValue(clYellow), 
+  GetBValue(clYellow),<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GetRValue(clWhite), GetGValue(clWhite), 
+  GetBValue(clWhite),<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RichEdit1.Font.Size * 2]));<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;cyr := false;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;num := false;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> i := 1 <b>to</b> Length(AText) <b>do</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ch := AText[i];<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//if cyrillic<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> (ch > #191) <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> <b>not</b> cyr <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cyr := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\b\cf1');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> <b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> cyr <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd 
+  := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cyr 
+  := false;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\b0\cf0');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;//if number<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch <b>in</b> ['0'..'9'] <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> <b>not</b> num <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\ul\highlight2');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> <b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> num <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num := false;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\ulnone\highlight3');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>; <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;//if end of line<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch = #13 <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := true;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RTF.WriteString('\par\li50');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> (ch <> #13) <b>and</b> (ch <> #10) <b>then</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>begin</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> cmd <b>then</b> RTF.WriteString(' 
+  ');<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cmd := false;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>if</b> ch < #192 <b>then</b> RTF.WriteString(ch)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>else</b> RTF.WriteString(LowerCase('\''' 
+  + IntToHex(Ord(ch), 2)));<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>end</b>;<br>
+  &nbsp;&nbsp;<b>end</b>;<br>
+  <br>
+  &nbsp;&nbsp;RTF.WriteString('}');<br>
+  &nbsp;&nbsp;RTF.Seek(0, soFromBeginning);<br>
+  &nbsp;&nbsp;RichEdit1.Lines.BeginUpdate;<br>
+  &nbsp;&nbsp;RichEdit1.Lines.LoadFromStream(RTF);<br>
+  &nbsp;&nbsp;RichEdit1.Lines.EndUpdate;<br>
+  &nbsp;&nbsp;<b>finally</b><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;RTF.Free;<br>
+  &nbsp;&nbsp;<b>end</b>;<br>
+  <br>
+  &nbsp;&nbsp;RichEdit1.SelStart := 0;<br>
+  &nbsp;&nbsp;RichEdit1.SelLength := 0;<br>
+  <b>end</b>;<br>
+  <br>
+  РўСЏ РІРёР·СѓР°Р»РёР·РёСЂР° РїРѕРґР°РґРµРЅ Р№ string РєР°С‚Рѕ РёР·РІСЉСЂС€РІР° СЃР»РµРґРЅРёС‚Рµ РїСЂРѕРјРµРЅРё. РђРєРѕ СЃСЂРµС‰РЅРµ:<br>
+  - РєРёСЂРёР»РёС†Р° - СѓРґРµР±РµР»СЏРІР° С€СЂРёС„С‚Р° Рё СЃРјРµРЅСЏ С†РІРµС‚Р° РјСѓ РЅР° С‡РµСЂРІРµРЅ<br>
+  - С‡РёСЃР»Р° - Р·Р°РґР°РІР° РєСѓСЂСЃРёРІРµРЅ С€СЂРёС„С‚ Рё СЃРјРµРЅСЏ С†РІРµС‚Р° РЅР° Р¶СЉР»С‚<br>
+  <br>
+  Р•С‚Рѕ РјРѕСЏ РїСЂРѕР±РµРЅ С‚РµРєСЃС‚ :<br>
+  <font face="Courier New, Courier, mono">ViewRTFText('Hello there! РљР°Рє СЃРїР° РґРЅРµСЃ.'#13#10 
+  +<br>
+  'РџСЂРµР· 2002 year we won the World Cup'#13#10 +<br>
+  'Bye');</font><br>
+  <br>
+  Р’ СЃР»РµРґРІР°С‰Р°С‚Р° С‡Р°СЃС‚ С‰Рµ РѕР±СЏСЃРЅСЏ РєР°Рє РЅР°Р№-РґРѕР±СЂРµ РјРѕР¶РµС‚Рµ РґР° РїСЂРѕРјРµРЅСЏС‚Рµ С„РѕСЂРјР°С‚РёСЂР°РЅРµС‚Рѕ 
+  РЅР° С‚РµРєСЃС‚Р°, РґРѕРєР°С‚Рѕ РїРѕС‚СЂРµР±РёС‚РµР»СЏ СЂР°Р±РѕС‚Рё СЃ РІР°С€Р°С‚Р° РїСЂРѕРіСЂР°РјР°.</font></font></p>
+<p><font face="Arial, Helvetica, sans-serif">РђРєРѕ РёРјР°С‚Рµ РЅСЏРєР°РєРІРё РєРѕРјРµРЅС‚Р°СЂРё РёР»Рё РІСЉРїСЂРѕСЃРё, 
+  РјРё РёР·РїСЂР°С‚РµС‚Рµ РµРґРёРЅ РјРµР№Р».</font></p>
+<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
+  &copy; 2002 Wise Guy<br>
+  wise_guybg@yahoo.com <br>
+  Last revised: 06.06.2002</font></p>
+</body>
+</html>
